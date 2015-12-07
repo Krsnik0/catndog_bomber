@@ -31,11 +31,6 @@ public class NormalBlock : AbstractBlock {
 	{
 	}
 
-	public override bool triggerInput (InputEvent input_)
-	{
-		return false;
-	}
-
 	public override void destroyObject ()
 	{
 		GameMap.getInstance ().removeObject (this);

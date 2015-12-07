@@ -41,7 +41,7 @@ public class MarkerBlock : AbstractBlock {
 	{
 	}
 
-	public override bool triggerInput (InputEvent input_)
+	/*public override bool triggerInput (InputEvent input_)
 	{
 		if (isTouchable) {
 			switch (input_.inputType) {
@@ -63,7 +63,7 @@ public class MarkerBlock : AbstractBlock {
 		}
 
 		return false;
-	}
+	}*/
 
 	public override void destroyObject ()
 	{

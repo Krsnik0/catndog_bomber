@@ -8,7 +8,4 @@ public abstract class AbstractBoomscapeObject : MonoBehaviour {
 
 	abstract public void onStateEnd( GameManager.GameState gameState_ );
 	abstract public void onStateStart( GameManager.GameState gameState_ );
-	
-	abstract public bool triggerInput( InputEvent input_ );
-	//abstract public bool onChildClick( AbstractBoomscapeObject child_ );
 }

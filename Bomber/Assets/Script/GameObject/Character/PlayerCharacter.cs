@@ -19,6 +19,8 @@ public class PlayerCharacter : AbstractCharacter {
 	{
 		if (!_playerInitFlag) {
 			_playerInitFlag = true;
+
+			EventManager.getInstance().addEventListener( InputEvent.INPUT_EVENT_KEY, onInputEvent );
 		}
 	}
 
@@ -27,7 +29,18 @@ public class PlayerCharacter : AbstractCharacter {
 		base.updateObject ();
 	}
 
-	public override bool triggerInput (InputEvent input_)
+	private void onInputEvent( AbstractEvent event_ )
+	{
+		switch (GameManager.getInstance ().currentState) {
+		case GameManager.GameState.PLAYING:
+			if (event_.target is GameMap) {
+				setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
+			}
+			break;
+		}
+	}
+
+	/*public override bool triggerInput (InputEvent input_)
 	{
 		switch (GameManager.getInstance ().currentState) {
 		case GameManager.GameState.PLAYING:
@@ -35,7 +48,7 @@ public class PlayerCharacter : AbstractCharacter {
 			break;
 		}
 		return false;
-	}
+	}*/
 
 	public override void destroyObject ()
 	{

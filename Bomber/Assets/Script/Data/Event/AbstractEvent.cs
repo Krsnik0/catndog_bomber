@@ -16,4 +16,5 @@ public abstract class AbstractEvent {
 	}
 
 	public bool isBubbling { get; set; }
+	abstract public string eventKey { get; }
 }

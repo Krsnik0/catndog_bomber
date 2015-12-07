@@ -31,11 +31,6 @@ public class NormalBomb : AbstractBomb {
 	{
 	}
 
-	public override bool triggerInput (InputEvent input_)
-	{
-		return false;
-	}
-
 	public override void destroyObject ()
 	{
 		GameMap.getInstance ().removeObject (this);

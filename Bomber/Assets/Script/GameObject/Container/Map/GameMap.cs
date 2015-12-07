@@ -56,6 +56,11 @@ public class GameMap : AbstractContainerObject {
 		_objectLayer.loadLayer (mapData_.objLayer);
 		_tileLayer.loadEmptyLayer (mapSize);
 		_markerLayer.loadEmptyLayer (mapSize);
+
+		BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+		collider.size = new Vector2 (mapSize.x * GameMapConst.BLOCK_SIZE, mapSize.y * GameMapConst.BLOCK_SIZE);
+		collider.offset = collider.size / 2;
+		EventManager.getInstance().addEventListener( InputEvent.INPUT_EVENT_KEY, onInputEvent );
 	}
 
 	public bool isMovable( int x_, int y_ )
@@ -135,20 +140,21 @@ public class GameMap : AbstractContainerObject {
 		_objectLayer.explode (bomb_);
 	}
 
-	public override bool triggerInput (InputEvent input_)
+	private void onInputEvent( AbstractEvent event_ )
 	{
-		switch (input_.inputType) {
-		case InputEvent.InputType.DRAG:
-			return base.triggerInput( input_ );
-		case InputEvent.InputType.TOUCH:
-			bool retValue = base.triggerInput (input_);
-			TouchInputEvent touchInput = ((TouchInputEvent)input_);
+		InputEvent inputEvent = (InputEvent)event_;
 
-			if( touchInput.selectedObject is MarkerBlock )
-			{
-				IntegerPair posIdxPair = touchInput.selectedObject.positionIndexPair;
+		switch (GameManager.getInstance ().currentState) {
+		case GameManager.GameState.THROWING:
+			switch (inputEvent.inputType) {
+			case InputEvent.InputType.TOUCH:
+
+				Debug.Log( event_.target );
+				TouchInputEvent touchInput = (TouchInputEvent)inputEvent;
+				IntegerPair posIdxPair = inputEvent.targetGameObject.positionIndexPair;
+				
 				BombValueObject bombData = RootUI.getInstance().uiData.selectedBomb;
-
+				
 				if( _markerLayer.isSelectedBlock( posIdxPair ) )
 				{
 					AbstractBomb bomb = GameObjectFactory.getInstance().generateObject( bombData.prefabData.Value ).GetComponent<AbstractBomb>();
@@ -156,25 +162,26 @@ public class GameMap : AbstractContainerObject {
 					bomb.bombData = bombData;
 					bomb.startCountdown();
 					addObject( bomb );
-
+					
 					GameManager.getInstance().changeState( GameManager.GameState.PLAYING );
 				}
 				else
 				{
 					_markerLayer.removeAll ( true );
-					_markerLayer.markThrowableArea (_objectLayer.playerCharacter.positionIndexPair, RootUI.getInstance().uiData.selectedBomb.throwRange, new Color( 0f, 1f, 0f, 0.3f ) );
+					_markerLayer.markThrowableArea (_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange, new Color( 0f, 1f, 0f, 0.3f ) );
 					_markerLayer.markExplosionArea ( posIdxPair,
 					                                bombData.explosionShape,
 					                                bombData.bombPosition,
 					                                new Color( 1f, 0f, 0f, 0.3f ) );
 				}
-
+				break;
+			default:
+				break;
 			}
-			return retValue;
+			break;
 		}
-		return false;
 	}
-
+	
 	public void updateMap()
 	{
 		switch (GameManager.getInstance ().currentState) {

@@ -50,8 +50,7 @@ public class GameManager : MonoBehaviour {
 
 		triggerInput ();
 	}
-
-	// TODO : Refactor. Make input call & bubbling sys.
+	
 	private void triggerInput()
 	{
 		if (Input.GetMouseButtonDown (0)) {
@@ -62,11 +61,18 @@ public class GameManager : MonoBehaviour {
 			}
 			else
 			{
-				input = new TouchInputEvent( null, Camera.main.ScreenToWorldPoint( Input.mousePosition ) );
-				Debug.Log( "Touch input(Map) : " + input.touchPosition.ToString() );
-				bool retValue = _map.triggerInput( input );
+				RaycastHit2D hit = Physics2D.Raycast( Camera.main.ScreenToWorldPoint( Input.mousePosition ),Vector2.zero, 0f );
+				if( hit.collider != null )
+				{
+					AbstractBoomscapeObject gameObj = hit.collider.gameObject.GetComponentInParent<AbstractBoomscapeObject>();
 
-				if( _currentState == GameState.THROWING && !retValue )
+					if( gameObj != null )
+					{
+						TouchInputEvent touch = new TouchInputEvent( gameObj );
+						EventManager.getInstance().dispatchEvent( touch );
+					}
+				}
+				else if( _currentState == GameState.THROWING )
 				{
 					changeState( GameState.PLAYING );
 				}

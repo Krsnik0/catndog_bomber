@@ -30,7 +30,7 @@ public abstract class AbstractContainerObject : AbstractBoomscapeObject {
 		}
 	}
 
-	public override bool triggerInput (InputEvent input_)
+	/*public override bool triggerInput (InputEvent input_)
 	{
 		bool retValue = false;
 		for (int i = _containingObjects.Count - 1; i >= 0; -- i) {
@@ -41,7 +41,7 @@ public abstract class AbstractContainerObject : AbstractBoomscapeObject {
 		}
 
 		return retValue;
-	}
+	}*/
 	
 	public override void onStateEnd (GameManager.GameState gameState_)
 	{

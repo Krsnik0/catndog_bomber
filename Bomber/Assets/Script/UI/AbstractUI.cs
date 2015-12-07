@@ -96,10 +96,4 @@ public abstract class AbstractUI : AbstractBoomscapeObject {
 			parentUI.onChildClick( child_ );
 		}
 	}
-
-	public override sealed bool triggerInput (InputEvent input_)
-	{
-		Debug.LogError ("AbstractUI.handleInput called");
-		return false;
-	}
 }
