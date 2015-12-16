@@ -7,7 +7,7 @@ public class BombLister : AbstractUI {
 	private bool _bombListerInitFlag = false;
 
 	private BombCursor _cursor;
-	private BombValueObject _selectedBomb;
+	private AbstractBombValueObject _selectedBomb;
 
 	// Use this for initialization
 	void Start () {
@@ -26,36 +26,55 @@ public class BombLister : AbstractUI {
 			_bombListerInitFlag = true;
 			_cursor = GetComponentInChildren<BombCursor> ();
 			_cursor.setVisibility( false );
+
+			EventManager.getInstance().addEventListener( GameStateEvent.STATE_EVENT_KEY, onThrowingStateEnded );
 		}
 	}
 
-	public override void onStateEnd (GameManager.GameState gameState_)
+	private void onThrowingStateEnded( AbstractEvent event_ )
 	{
-		base.onStateEnd (gameState_);
+		GameStateEvent stateEvent = event_ as GameStateEvent;
 
-		switch (gameState_) {
-		case GameManager.GameState.THROWING:
+		if (stateEvent.prevState == GameManager.GameState.THROWING) {
 			_cursor.setVisibility( false );
-			break;
 		}
 	}
 
-	public void loadAllowedBombsData( BombValueObject[] allowedBombs_ )
+	public void loadAllowedBombsData( AbstractBombValueObject[] allowedBombs_ )
 	{
-		transform.Find ("BombListerBackground").localScale = new Vector3( allowedBombs_.Length, 1f, 1f );
+        Transform backgroundTransform = transform.Find("Background");
+        Vector3 localScale = backgroundTransform.localScale;
 
-		GameObject icon;
-		RectTransform iconRectTransform;
+        localScale.x *= allowedBombs_.Length;
+        backgroundTransform.localScale = localScale;
+
+        //BoxCollider2D backgroundCollider = background.GetComponent<BoxCollider2D>();
+        //Vector2 colliderSize = backgroundCollider.size;
+        //colliderSize.x *= allowedBombs_.Length;
+
+
+        GameObject icon;
+        Transform iconTransform;
+        float offset;
+
+        if (allowedBombs_.Length % 2 == 0)
+        {
+            offset = Mathf.Floor(allowedBombs_.Length / 2) - 0.5f;
+        }
+        else
+        {
+            offset = Mathf.Floor(allowedBombs_.Length / 2);
+        }
 
 		for (int i = 0; i < allowedBombs_.Length; ++ i) {
 			icon = GameObjectFactory.getInstance().generateObject( allowedBombs_[i].iconPath.Value );
 			icon.GetComponent<BombIconUI>().bombData = allowedBombs_[i];
 			icon.transform.SetParent( transform );
-			iconRectTransform = (RectTransform)icon.transform;
-			iconRectTransform.localPosition = new Vector3( 100f * i + 50f, 50f, 0 );
+			iconTransform = (Transform)icon.transform;
+			iconTransform.localPosition = new Vector3( 1f * i - offset, 0, 0 );
 		}
 
-		updateChildrenList ();
+        updateChildrenList ();
 	}
 
 	protected override void updateObject ()
@@ -64,13 +83,16 @@ public class BombLister : AbstractUI {
 
 	public override void onChildClick (AbstractUI child_)
 	{
-		GameManager.getInstance ().changeState (GameManager.GameState.THROWING);
+        if (child_ is BombIconUI)
+        {
+            GameManager.getInstance().changeState(GameManager.GameState.THROWING);
 
-		_cursor.setVisibility (true);
-		_cursor.rTransform.localPosition = child_.rTransform.localPosition;
-		_selectedBomb = child_.GetComponent<BombIconUI> ().bombData;
+            _cursor.setVisibility(true);
+            _cursor.transform.localPosition = child_.transform.localPosition;
+            _selectedBomb = child_.GetComponent<BombIconUI>().bombData;
 
-		base.onChildClick (child_);
+            base.onChildClick(child_);
+        }
 	}
 
 	public void cancelBombSelection()
@@ -78,7 +100,7 @@ public class BombLister : AbstractUI {
 		_selectedBomb = null;
 	}
 
-	public BombValueObject selectedBomb
+	public AbstractBombValueObject selectedBomb
 	{
 		get {
 			return _selectedBomb;

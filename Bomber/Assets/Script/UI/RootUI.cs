@@ -66,6 +66,6 @@ public class RootUI : AbstractUI {
 	public override void onChildClick (AbstractUI child_)
 	{
 		updateUIData ();
-		GameMap.getInstance ().updateMap ();
+		EventManager.getInstance().dispatchEvent( new UpdateRequestEvent( typeof( GameMap ) ) );
 	}
 }

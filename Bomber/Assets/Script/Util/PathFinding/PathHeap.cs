@@ -54,8 +54,8 @@ public class PathHeap {
 			pathHeap [0] = newRoot;
 			pathHeap.RemoveAt( pathHeap.Count - 1 );
 			downHeap (0);
-		} else {
-			pathHeap.RemoveAt(0);
+		} else if( pathHeap.Count == 1 ) {
+            pathHeap.RemoveAt(0);
 		}
 
 		return retValue;

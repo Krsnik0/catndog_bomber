@@ -27,7 +27,7 @@ public abstract class AbstractCharacter : AbstractGameObject {
 
 	protected override void updateObject ()
 	{
-		switch (GameManager.getInstance ().currentState) {
+		/*switch (GameManager.getInstance ().currentState) {
 		case GameManager.GameState.PLAYING:
 			if (_path != null) {
 				Vector3 dst = PositionCalcUtil.mapIndexToVector3 (_path [0]);
@@ -48,20 +48,32 @@ public abstract class AbstractCharacter : AbstractGameObject {
 				}
 			}
 			break;
+		}*/
+		if (_path != null) {
+			Vector3 dst = PositionCalcUtil.mapIndexToVector3 (_path [0]);
+			Vector3 delta = (dst - transform.position).normalized * speed * Time.deltaTime;
+			transform.position += delta;
+			
+			if( Vector3.Distance( dst, transform.position ) < 0.03f * Time.timeScale )
+			{
+				EventManager.getInstance().dispatchEvent( new UpdateRequestEvent( typeof( GameMap ) ) );
+				//Debug.Log( "next destination = " + dst.ToString() );
+				transform.position = dst;
+				_path.RemoveAt( 0 );
+				
+				if( _path.Count == 0 )
+				{
+					Debug.Log( "arrived" );
+					_path = null;
+				}
+			}
 		}
-	}
-
-	public override void onStateEnd (GameManager.GameState gameState_)
-	{
-	}
-
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
 	}
 
 	public override void destroyObject ()
 	{
-		GameMap.getInstance ().removeObject (this);
+		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
+		//GameMap.getInstance ().removeObject (this);
 		Destroy (this);
 	}
 }

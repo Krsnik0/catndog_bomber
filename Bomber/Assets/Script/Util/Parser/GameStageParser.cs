@@ -59,8 +59,8 @@ public class GameStageParser {
 
 		// Parse bomb data
 		XmlNodeList bombs = stageDataXML.SelectSingleNode ("Bombs").SelectNodes ("Code");
-		BombValueObject allowedBomb;
-		ret.allowedBombs = new BombValueObject[bombs.Count];
+		AbstractBombValueObject allowedBomb;
+		ret.allowedBombs = new AbstractBombValueObject[bombs.Count];
 
 		for (i = 0; i < bombs.Count; ++ i) {
 			allowedBomb = BombDataManager.getInstance().findBombData( bombs[i].InnerText );
@@ -70,7 +70,8 @@ public class GameStageParser {
 		}
 
 		// System blocks
-		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0000" ).prefabData );
+		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0000" ).prefabData );		// marker
+		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0001" ).prefabData );		// flame
 
 		return ret;
 	}

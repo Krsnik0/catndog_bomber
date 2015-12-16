@@ -3,9 +3,14 @@ using System.Collections;
 
 public class MarkerBlock : AbstractBlock {
 
+    public enum MarkerType { NONE, THROW_RANGE, EXPLOSION_RANGE, BOMB_POSITION };
+
+    private bool _markerBlockInitFlag = false;
+    public MarkerType markerType { get; set; }
+
 	public bool isTouchable { get; set; }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		initObject ();
 	}
 	
@@ -22,52 +27,31 @@ public class MarkerBlock : AbstractBlock {
 
 	protected override void initObject ()
 	{
+		if (!_markerBlockInitFlag) {
+			_markerBlockInitFlag = true;
+
+			EventManager.getInstance().addEventListener( GameStateEvent.STATE_EVENT_KEY, onStateChanged );
+		}
 	}
 
 	protected override void updateObject ()
 	{
 	}
 
-	public override void onStateEnd (GameManager.GameState gameState_)
+	private void onStateChanged( AbstractEvent event_ )
 	{
-		switch (gameState_) {
-		case GameManager.GameState.THROWING:
+		GameStateEvent stateEvent = event_ as GameStateEvent;
+
+		if (stateEvent.prevState == GameManager.GameState.THROWING) {
 			destroyObject();
-			break;
 		}
 	}
-
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
-	}
-
-	/*public override bool triggerInput (InputEvent input_)
-	{
-		if (isTouchable) {
-			switch (input_.inputType) {
-			case InputEvent.InputType.TOUCH:
-				IntegerPair clickIdx = PositionCalcUtil.vector3ToMapIndex (input_.touchPosition);
-				
-				if( clickIdx.ToString () == positionIndexPair.ToString () )
-				{
-					((TouchInputEvent)input_).selectedObject = this;
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			case InputEvent.InputType.DRAG:
-				return false;
-			}
-		}
-
-		return false;
-	}*/
-
+	
 	public override void destroyObject ()
 	{
-		GameMap.getInstance ().removeObject (this);
+		EventManager.getInstance().removeEventListener( GameStateEvent.STATE_EVENT_KEY, onStateChanged );
+		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
+		//GameMap.getInstance ().removeObject (this);
 		GameObject.Destroy (gameObject);
 	}
 }

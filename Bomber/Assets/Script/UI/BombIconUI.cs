@@ -3,7 +3,9 @@ using System.Collections;
 
 public class BombIconUI : AbstractUI {
 
-	private BombValueObject _bombData;
+    private bool _initBombIconFlag = false;
+
+	private AbstractBombValueObject _bombData;
 
 	// Use this for initialization
 	void Start () {
@@ -15,17 +17,43 @@ public class BombIconUI : AbstractUI {
 		updateObject ();
 	}
 
-	protected override void updateObject ()
+    protected override void initObject()
+    {
+        base.initObject();
+
+        if (!_initBombIconFlag)
+        {
+            _initBombIconFlag = true;
+
+            EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
+        }
+    }
+
+    protected override void updateObject ()
 	{
 
 	}
+
+    private void onInputEvent( AbstractEvent event_ )
+    {
+        InputEvent inputEvent = event_ as InputEvent;
+        if (inputEvent.inputType == InputEvent.InputType.TOUCH)
+        {
+            TouchInputEvent touchinputEvent = inputEvent as TouchInputEvent;
+
+            if (touchinputEvent.target == this)
+            {
+                onClick();
+            }
+        }
+    }
 
 	public override void onChildClick (AbstractUI child_)
 	{
 		base.onChildClick (child_);
 	}
 
-	public BombValueObject bombData
+	public AbstractBombValueObject bombData
 	{
 		get {
 			return _bombData;

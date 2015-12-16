@@ -18,7 +18,7 @@ public abstract class InputEvent : AbstractEvent {
 		_inputPos = target_.transform.position;
 	}
 
-	public InputEvent( Vector2 inputPos_ ) : base( null )
+	public InputEvent( Vector2 inputPos_ )
 	{
 		_inputPos = inputPos_;
 	}
@@ -39,6 +39,14 @@ public abstract class InputEvent : AbstractEvent {
 			}
 		}
 	}
+
+    public Vector2 inputPos
+    {
+        get
+        {
+            return _inputPos;
+        }
+    }
 
 	public override string eventKey {
 		get {

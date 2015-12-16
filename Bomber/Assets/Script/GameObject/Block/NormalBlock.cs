@@ -13,27 +13,26 @@ public class NormalBlock : AbstractBlock {
 		updateObject ();
 	}
 
-	protected override void initObject ()
-	{
-
-	}
-
 	protected override void updateObject ()
 	{
-
+		switch (_blockState) {
+		case BlockState.DESTROYING:
+			Color c = _spriteRenderer.material.color;
+			c.a -= 5f * Time.deltaTime;
+			_spriteRenderer.material.color = c;
+			break;
+		}
 	}
 
-	public override void onStateEnd (GameManager.GameState gameState_)
+	public override void onExplosion (AbstractBombValueObject bombData_)
 	{
-	}
-	
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
+		_blockState = BlockState.DESTROYING;
+		Invoke ("destroyObject", 0.2f);
 	}
 
 	public override void destroyObject ()
 	{
-		GameMap.getInstance ().removeObject (this);
+		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
 		Destroy (gameObject);
 	}
 }

@@ -6,7 +6,7 @@ public class BombDataManager : AbstractDataManager {
 
 	static private BombDataManager _instance;
 	
-	private Dictionary<string, BombValueObject> _hashmap;
+	private Dictionary<string, AbstractBombValueObject> _hashmap;
 	
 	static public BombDataManager getInstance()
 	{
@@ -19,64 +19,28 @@ public class BombDataManager : AbstractDataManager {
 	
 	private BombDataManager()
 	{
-		_hashmap = new Dictionary<string, BombValueObject>();
+		_hashmap = new Dictionary<string, AbstractBombValueObject>();
 	}
 	
 	public override void loadData ()
 	{
 		_hashmap.Add( "BOMB0000",
-		             new BombValueObject(
-						"BOMB0000",
-						new bool[][] {
-							new bool[] { true, true, true },
-							new bool[] { true, false, true },
-							new bool[] { true, true, true }
-						},
-						new IntegerPair( 1, 1 ),
-						3,
-						3)
+		             new BombType1("BOMB0000", 3, 3, 1, 5)
 		);
 		_hashmap.Add( "BOMB0001",
-		             new BombValueObject(
-						"BOMB0001",
-						new bool[][] {
-							new bool[] { false, true, false },
-							new bool[] { true, false, true },
-							new bool[] { false, true, false }
-						},
-						new IntegerPair( 1, 1 ),
-						4,
-						4)
-		             );
+                     new BombType1("BOMB0001", 3, 3, 1, 5)
+                     );
 		_hashmap.Add( "BOMB0002",
-		             new BombValueObject(
-						"BOMB0002",
-						new bool[][] {
-							new bool[] { true, false, true },
-							new bool[] { false, false, false },
-							new bool[] { true, false, true }
-						},
-						new IntegerPair( 1, 1 ),
-						5,
-						5)
-		             );
+                     new BombType1("BOMB0002", 3, 3, 1, 5)
+                     );
 		_hashmap.Add( "BOMB0003",
-		             new BombValueObject(
-						"BOMB0003",
-						new bool[][] {
-							new bool[] { true, false, true },
-							new bool[] { true, false, true },
-							new bool[] { true, false, true }
-						},
-						new IntegerPair( 1, 1 ),
-						2,
-						2)
-		             );
+                     new BombType1("BOMB0003", 3, 3, 1, 5)
+                     );
 	}
 	
-	public BombValueObject findBombData( string code_ )
+	public AbstractBombValueObject findBombData( string code_ )
 	{
-		BombValueObject retValue;
+		AbstractBombValueObject retValue;
 		
 		if (_hashmap.TryGetValue (code_, out retValue)) {
 			return retValue;

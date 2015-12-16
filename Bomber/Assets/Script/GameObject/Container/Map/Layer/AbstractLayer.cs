@@ -8,7 +8,7 @@ public abstract class AbstractLayer : AbstractContainerObject {
 	private bool _layerFirstUpdateFlag;
 
 	private AbstractGameObject[][] _obstacleHashmap;
-	private List<AbstractGameObject> _nonObstacleObjects;
+	protected List<AbstractGameObject> _nonObstacleObjects;
 
 	private IntegerPair _size;
 
@@ -62,7 +62,7 @@ public abstract class AbstractLayer : AbstractContainerObject {
 		
 		for( i = 0; i < layerData_.Length; ++ i )
 		{
-			_obstacleHashmap[i] = new AbstractGameObject[layerData_[i].Length];
+            _obstacleHashmap[i] = new AbstractGameObject[layerData_[i].Length];
 		}
 
 		GameObject gameObj;
@@ -123,6 +123,7 @@ public abstract class AbstractLayer : AbstractContainerObject {
 
 		if (obj_.isObstacle) {
 			idxPair = obj_.positionIndexPair;
+
 			_obstacleHashmap [idxPair.x] [idxPair.y] = null;
 		}
 
@@ -135,41 +136,6 @@ public abstract class AbstractLayer : AbstractContainerObject {
 			IntegerPair idxPair = obj_.positionIndexPair;
 			_obstacleHashmap[ idxPair.x ][ idxPair.y ] = null;
 			_obstacleHashmap[ dst_.x ][ dst_.y ] = obj_;
-		}
-	}
-
-	public void explode( AbstractBomb bomb_ )
-	{
-		int i, j, k;
-		IntegerPair bombPos = bomb_.positionIndexPair;
-		IntegerPair bombCenter = bomb_.bombData.bombPosition;
-		IntegerPair currentEffectPos;
-
-		for( i = 0; i < bomb_.bombData.explosionShape.Length; ++ i )
-		{
-			for( j = 0; j < bomb_.bombData.explosionShape[i].Length; ++ j )
-			{
-				currentEffectPos = bombPos.sub( bombCenter ).add( new IntegerPair( i, j ) );
-				
-				if( 0 <= currentEffectPos.x && currentEffectPos.x < layerSize.x &&
-				   0 <= currentEffectPos.y && currentEffectPos.y < layerSize.y &&
-				   bomb_.bombData.explosionShape[i][j] &&
-				   isObjectExistAt( currentEffectPos.x, currentEffectPos.y ) )
-				{
-					getObjectAt( currentEffectPos.x, currentEffectPos.y ).onExplosion( bomb_.bombData );
-				}
-
-				for( k = _nonObstacleObjects.Count - 1; k >= 0; -- k )
-				{
-					if( PositionCalcUtil.tileRectFromIdxPair( _nonObstacleObjects[k].positionIndexPair ).Overlaps(
-						PositionCalcUtil.tileRectFromIdxPair( currentEffectPos ) )
-					   )
-					{
-						Debug.Log( currentEffectPos );
-						_nonObstacleObjects[k].onExplosion( bomb_.bombData );
-					}
-				}
-			}
 		}
 	}
 }

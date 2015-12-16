@@ -6,6 +6,10 @@ public abstract class AbstractBlock : AbstractGameObject {
 	protected enum BlockState { NORMAL, DESTROYING, MOVING };
 	protected BlockState _blockState { get; set; }
 
+	private bool _blockInitFlag = false;
+
+	protected SpriteRenderer _spriteRenderer;
+
 	// Use this for initialization
 	void Start () {
 		initObject ();
@@ -14,7 +18,15 @@ public abstract class AbstractBlock : AbstractGameObject {
 	// Update is called once per frame
 	void Update () {
 		updateObject ();
-	
+	}
+
+	protected override void initObject ()
+	{
+		if (!_blockInitFlag) {
+			_blockInitFlag = true;
+
+			_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+		}
 	}
 
 	public override GameMap.GameMapLayer layer {
@@ -29,7 +41,7 @@ public abstract class AbstractBlock : AbstractGameObject {
 		}
 	}
 
-  	public override void onExplosion (BombValueObject bombData_)
+  	public override void onExplosion (AbstractBombValueObject bombData_)
 	{
 		destroyObject ();
 	}

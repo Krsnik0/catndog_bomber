@@ -19,6 +19,6 @@ public abstract class AbstractGameObject : AbstractBoomscapeObject {
 	public abstract bool isObstacle { get; }
 	public abstract GameMap.GameMapLayer layer { get; }
 
-	public abstract void onExplosion( BombValueObject bombData_ );
+	public abstract void onExplosion( AbstractBombValueObject bombData_ );
 	public abstract void destroyObject ();
 }

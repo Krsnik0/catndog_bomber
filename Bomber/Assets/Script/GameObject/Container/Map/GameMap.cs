@@ -2,193 +2,287 @@
 using System.Collections;
 using System.Xml;
 
-public class GameMap : AbstractContainerObject {
+public class GameMap : AbstractContainerObject
+{
 
-	public enum GameMapLayer { TILE, OBJECT, MARKER };
+    public enum GameMapLayer { TILE, OBJECT, MARKER };
 
-	static private GameMap _instance;
+    static private GameMap _instance;
 
-	public IntegerPair mapSize { get; set; }
+    public IntegerPair mapSize { get; set; }
 
-	private bool _mapInitFlag = false;
+    private bool _mapInitFlag = false;
+    private bool _mapUpdatePerFrameFlag;            // updateMap method must be called once per frame
 
-	private MarkerLayer _markerLayer;
-	private ObjectLayer _objectLayer;
-	private TileLayer _tileLayer;
+    private MarkerLayer _markerLayer;
+    private ObjectLayer _objectLayer;
+    private TileLayer _tileLayer;
 
-	// Use this for initialization
-	void Start () {
-		initObject ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public BoxCollider2D boxCollider { get; set; }
 
-	static public GameMap getInstance()
-	{
-		return _instance;
-	}
+    // Use this for initialization
+    void Start()
+    {
+        initObject();
+    }
 
-	protected override void initObject ()
-	{
-		base.initObject ();
+    // Update is called once per frame
+    void Update()
+    {
+        updateObject();
+    }
 
-		if (!_mapInitFlag) {
-			_mapInitFlag = true;
+    protected override void updateObject()
+    {
+        _mapUpdatePerFrameFlag = true;
+        base.updateObject();
+    }
 
-			_instance = this;
+    static public GameMap getInstance()
+    {
+        return _instance;
+    }
 
-			_markerLayer = GetComponentInChildren<MarkerLayer>();
-			_objectLayer = GetComponentInChildren<ObjectLayer>();
-			_tileLayer = GetComponentInChildren<TileLayer>();
+    protected override void initObject()
+    {
+        base.initObject();
 
-			addObject( _markerLayer );
-			addObject( _objectLayer );
-			addObject( _tileLayer );
-		}
-	}
+        if (!_mapInitFlag)
+        {
+            _mapInitFlag = true;
 
-	public void loadStage( StageValueObject mapData_ )
-	{
-		mapSize = new IntegerPair( mapData_.objLayer.Length, mapData_.objLayer[0].Length );
-		_objectLayer.loadLayer (mapData_.objLayer);
-		_tileLayer.loadEmptyLayer (mapSize);
-		_markerLayer.loadEmptyLayer (mapSize);
+            _instance = this;
 
-		BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
-		collider.size = new Vector2 (mapSize.x * GameMapConst.BLOCK_SIZE, mapSize.y * GameMapConst.BLOCK_SIZE);
-		collider.offset = collider.size / 2;
-		EventManager.getInstance().addEventListener( InputEvent.INPUT_EVENT_KEY, onInputEvent );
-	}
+            _markerLayer = GetComponentInChildren<MarkerLayer>();
+            _objectLayer = GetComponentInChildren<ObjectLayer>();
+            _tileLayer = GetComponentInChildren<TileLayer>();
 
-	public bool isMovable( int x_, int y_ )
-	{
-		if (0 <= x_ && x_ < mapSize.x &&
-			0 <= y_ && y_ < mapSize.y) {
-			return !_objectLayer.isObjectExistAt (x_, y_);
-		} else {
-			return false;
-		}
-	}
+            addObject(_markerLayer);
+            addObject(_objectLayer);
+            addObject(_tileLayer);
 
-	public bool isThrowable( int x_, int y_ )
-	{
-		return isMovable (x_, y_);
-	}
+            EventManager.getInstance().addEventListener(UpdateRequestEvent.UPDATE_REQUEST_EVENT_KEY, onUpdateRequest);
+            EventManager.getInstance().addEventListener(ObjectRemovedEvent.OBJECT_REMOVED_EVENT_KEY, onObjectRemoved);
+        }
+    }
 
-	public override AbstractGameObject addObject (AbstractGameObject obj_)
-	{
-		switch (obj_.layer) {
-		case GameMapLayer.MARKER:
-			return _markerLayer.addObject( obj_ );
-		case GameMapLayer.OBJECT:
-			return _objectLayer.addObject( obj_ );
-		case GameMapLayer.TILE:
-			return _tileLayer.addObject( obj_ );
-		}
+    public void loadStage(StageValueObject mapData_)
+    {
+        mapSize = new IntegerPair(mapData_.objLayer.Length, mapData_.objLayer[0].Length);
+        _objectLayer.loadLayer(mapData_.objLayer);
+        _tileLayer.loadEmptyLayer(mapSize);
+        _markerLayer.loadEmptyLayer(mapSize);
 
-		return null;
-	}
+        boxCollider = gameObject.AddComponent<BoxCollider2D>();
+        boxCollider.size = new Vector2(mapSize.x * GameMapConst.BLOCK_SIZE, mapSize.y * GameMapConst.BLOCK_SIZE);
+        boxCollider.offset = boxCollider.size / 2;
+        EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
+    }
 
-	public override AbstractGameObject removeObject (AbstractGameObject obj_)
-	{
-		switch (obj_.layer) {
-		case GameMapLayer.MARKER:
-			return _markerLayer.removeObject( obj_ );
-		case GameMapLayer.OBJECT:
-			return _objectLayer.removeObject( obj_ );
-		case GameMapLayer.TILE:
-			return _tileLayer.removeObject( obj_ );
-		}
-		
-		return null;
-	}
+    public bool isMovable(int x_, int y_)
+    {
+        if (0 <= x_ && x_ < mapSize.x &&
+            0 <= y_ && y_ < mapSize.y)
+        {
+            return !_objectLayer.isObjectExistAt(x_, y_);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public override bool contains (AbstractGameObject obj_)
-	{
-		switch (obj_.layer) {
-		case GameMapLayer.MARKER:
-			return _markerLayer.contains( obj_ );
-		case GameMapLayer.OBJECT:
-			return _objectLayer.contains( obj_ );
-		case GameMapLayer.TILE:
-			return _tileLayer.contains( obj_ );
-		}
-		
-		return false;
-	}
+    public bool isThrowable(int x_, int y_)
+    {
+        return isMovable(x_, y_);
+    }
 
-	public override void moveObject (AbstractGameObject obj_, IntegerPair dst_ )
-	{
-		switch (obj_.layer) {
-		case GameMapLayer.MARKER:
-			_markerLayer.moveObject( obj_, dst_ );
-			break;
-		case GameMapLayer.OBJECT:
-			_objectLayer.moveObject( obj_, dst_ );
-			break;
-		case GameMapLayer.TILE:
-			_tileLayer.moveObject( obj_, dst_ );
-			break;
-		}
-	}
+    public override AbstractGameObject addObject(AbstractGameObject obj_)
+    {
+        switch (obj_.layer)
+        {
+            case GameMapLayer.MARKER:
+                return _markerLayer.addObject(obj_);
+            case GameMapLayer.OBJECT:
+                return _objectLayer.addObject(obj_);
+            case GameMapLayer.TILE:
+                return _tileLayer.addObject(obj_);
+        }
 
-	public void explode( AbstractBomb bomb_ )
-	{
-		_objectLayer.explode (bomb_);
-	}
+        return null;
+    }
 
-	private void onInputEvent( AbstractEvent event_ )
-	{
-		InputEvent inputEvent = (InputEvent)event_;
+    public override AbstractGameObject removeObject(AbstractGameObject obj_)
+    {
+        switch (obj_.layer)
+        {
+            case GameMapLayer.MARKER:
+                return _markerLayer.removeObject(obj_);
+            case GameMapLayer.OBJECT:
+                return _objectLayer.removeObject(obj_);
+            case GameMapLayer.TILE:
+                return _tileLayer.removeObject(obj_);
+        }
 
-		switch (GameManager.getInstance ().currentState) {
-		case GameManager.GameState.THROWING:
-			switch (inputEvent.inputType) {
-			case InputEvent.InputType.TOUCH:
+        return null;
+    }
 
-				Debug.Log( event_.target );
-				TouchInputEvent touchInput = (TouchInputEvent)inputEvent;
-				IntegerPair posIdxPair = inputEvent.targetGameObject.positionIndexPair;
-				
-				BombValueObject bombData = RootUI.getInstance().uiData.selectedBomb;
-				
-				if( _markerLayer.isSelectedBlock( posIdxPair ) )
-				{
-					AbstractBomb bomb = GameObjectFactory.getInstance().generateObject( bombData.prefabData.Value ).GetComponent<AbstractBomb>();
-					bomb.positionIndexPair = posIdxPair.clone();
-					bomb.bombData = bombData;
-					bomb.startCountdown();
-					addObject( bomb );
-					
-					GameManager.getInstance().changeState( GameManager.GameState.PLAYING );
-				}
-				else
-				{
-					_markerLayer.removeAll ( true );
-					_markerLayer.markThrowableArea (_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange, new Color( 0f, 1f, 0f, 0.3f ) );
-					_markerLayer.markExplosionArea ( posIdxPair,
-					                                bombData.explosionShape,
-					                                bombData.bombPosition,
-					                                new Color( 1f, 0f, 0f, 0.3f ) );
-				}
-				break;
-			default:
-				break;
-			}
-			break;
-		}
-	}
-	
-	public void updateMap()
-	{
-		switch (GameManager.getInstance ().currentState) {
-		case GameManager.GameState.THROWING:
-			_markerLayer.removeAll ( true );
-			_markerLayer.markThrowableArea (_objectLayer.playerCharacter.positionIndexPair, RootUI.getInstance().uiData.selectedBomb.throwRange, new Color( 0f, 1f, 0f, 0.3f ) );
-			break;
-		}
-	}
+    public override bool contains(AbstractGameObject obj_)
+    {
+        switch (obj_.layer)
+        {
+            case GameMapLayer.MARKER:
+                return _markerLayer.contains(obj_);
+            case GameMapLayer.OBJECT:
+                return _objectLayer.contains(obj_);
+            case GameMapLayer.TILE:
+                return _tileLayer.contains(obj_);
+        }
+
+        return false;
+    }
+
+    public override void moveObject(AbstractGameObject obj_, IntegerPair dst_)
+    {
+        switch (obj_.layer)
+        {
+            case GameMapLayer.MARKER:
+                _markerLayer.moveObject(obj_, dst_);
+                break;
+            case GameMapLayer.OBJECT:
+                _objectLayer.moveObject(obj_, dst_);
+                break;
+            case GameMapLayer.TILE:
+                _tileLayer.moveObject(obj_, dst_);
+                break;
+        }
+    }
+
+    private void onInputEvent(AbstractEvent event_)
+    {
+        InputEvent inputEvent = (InputEvent)event_;
+
+        if (inputEvent.target is AbstractUI)
+        {
+            return;
+        }
+
+        switch (GameManager.getInstance().currentState)
+        {
+            case GameManager.GameState.THROWING:
+
+                if (inputEvent.target is MarkerBlock)
+                {
+                    AbstractBombValueObject bombData;
+                    
+                    MarkerBlock marker = inputEvent.targetGameObject as MarkerBlock;
+                    IntegerPair posIdxPair = marker.positionIndexPair;
+
+                    bombData = RootUI.getInstance().uiData.selectedBomb;
+
+                    switch (inputEvent.inputType)
+                    {
+                        case InputEvent.InputType.TOUCH:
+                            #region onTouchInput
+                            TouchInputEvent touchInput = (TouchInputEvent)inputEvent;
+
+                            if ( marker.markerType == MarkerBlock.MarkerType.BOMB_POSITION)
+                            {
+                                AbstractBomb bomb = GameObjectFactory.getInstance().generateObject(bombData.prefabData.Value).GetComponent<AbstractBomb>();
+                                bomb.positionIndexPair = marker.positionIndexPair;
+                                bomb.bombData = bombData;
+                                bomb.startCountdown();
+                                addObject(bomb);
+
+                                GameManager.getInstance().changeState(GameManager.GameState.PLAYING);
+                            }
+                            else if( !_objectLayer.isObjectExistAt( posIdxPair.x, posIdxPair.y ) )
+                            {
+                                _markerLayer.resetBackbuffer();
+                                
+                                //_markerLayer.removeAll(true);
+                                _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange);
+                                _markerLayer.markExplosionArea(posIdxPair,
+                                                                bombData.explosionShape,
+                                                                bombData.bombPosition);
+
+                                _markerLayer.drawBackbuffer();
+                            }
+                            #endregion
+                            break;
+                        case InputEvent.InputType.DRAG:
+                            
+                            #region onDragInput
+                            DragInputEvent dragInput = (DragInputEvent)inputEvent;
+
+                            switch (dragInput.dragState)
+                            {
+                                case DragInputEvent.DragState.DRAGGING:
+                                    //AbstractGameObject originObj = dragInput.target;
+                                    posIdxPair = PositionCalcUtil.vector3ToMapIndex(new Vector3( dragInput.inputPos.x, dragInput.inputPos.y ) );
+
+                                    if (_markerLayer.isSelectedBlock(posIdxPair))
+                                    {
+                                        bombData.currentSize -= Vector2.Dot(dragInput.inputPos - dragInput.dragOrigin, dragInput.dragDirection);
+                                        //Debug.Log(Vector2.Dot(origin - dragInput.dragOrigin, dragInput.dragDirection) + "," + bombData.currentSize);
+
+                                        _markerLayer.resetBackbuffer();
+                                        //_markerLayer.removeAll(true);
+                                        _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange);
+                                        _markerLayer.markExplosionArea(posIdxPair,
+                                                                        bombData.explosionShape,
+                                                                        bombData.bombPosition);
+                                        _markerLayer.drawBackbuffer();
+                                    }
+                                        
+                                    break;
+                            }
+                            #endregion
+                            
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+        }
+    }
+
+    private void updateMap()
+    {
+        if (_mapUpdatePerFrameFlag)
+        {
+            _mapUpdatePerFrameFlag = false;
+
+            switch (GameManager.getInstance().currentState)
+            {
+                case GameManager.GameState.THROWING:
+                    _markerLayer.resetBackbuffer();
+                    //_markerLayer.removeAll(true);
+                    _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, RootUI.getInstance().uiData.selectedBomb.throwRange);
+                    _markerLayer.drawBackbuffer();
+                    break;
+            }
+        }
+    }
+
+    private void onUpdateRequest(AbstractEvent event_)
+    {
+        UpdateRequestEvent reqEvent = event_ as UpdateRequestEvent;
+
+        if (reqEvent.targetType == GetType())
+        {
+            updateMap();
+        }
+    }
+
+    private void onObjectRemoved(AbstractEvent event_)
+    {
+        ObjectRemovedEvent removedEvent = event_ as ObjectRemovedEvent;
+
+        if (removedEvent.targetGameObject != null)
+        {
+            removeObject(removedEvent.targetGameObject);
+        }
+    }
 }

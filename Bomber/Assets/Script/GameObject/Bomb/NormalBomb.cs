@@ -18,22 +18,14 @@ public class NormalBomb : AbstractBomb {
 		base.initObject ();
 	}
 
-	public override void onExplosion (BombValueObject bombData_)
+	public override void onExplosion (AbstractBombValueObject bombData_)
 	{
 		explode ();
 	}
 
-	public override void onStateEnd (GameManager.GameState gameState_)
-	{
-	}
-
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
-	}
-
 	public override void destroyObject ()
 	{
-		GameMap.getInstance ().removeObject (this);
+		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
 		Destroy (gameObject);
 	}
 }

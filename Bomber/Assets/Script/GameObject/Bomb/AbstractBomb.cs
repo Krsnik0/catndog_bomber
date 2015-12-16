@@ -8,7 +8,7 @@ public abstract class AbstractBomb : AbstractGameObject {
 		TICKING,
 		EXPLODED
 	};
-	public BombValueObject bombData { get; set; }
+	public AbstractBombValueObject bombData { get; set; }
 
 	private float _countdown;
 	private BombState _state;
@@ -39,7 +39,8 @@ public abstract class AbstractBomb : AbstractGameObject {
 	{
 		if (_state == BombState.TICKING) {
 			_state = BombState.EXPLODED;
-			GameMap.getInstance ().explode (this);
+			EventManager.getInstance().dispatchEvent( new BombExplodeEvent( this ) );
+			//GameMap.getInstance ().explode (this);
 			destroyObject ();
 		}
 	}
@@ -59,7 +60,8 @@ public abstract class AbstractBomb : AbstractGameObject {
 
 	protected override void updateObject ()
 	{
-		if (GameManager.getInstance ().currentState == GameManager.GameState.PLAYING && _state == BombState.TICKING && _countdown >= 0 ) {
+		//if (GameManager.getInstance ().currentState == GameManager.GameState.PLAYING && _state == BombState.TICKING && _countdown >= 0 ) {
+		if ( _state == BombState.TICKING && _countdown >= 0 ) {
 			_countdown -= Time.deltaTime;
 			
 			if (_countdown < 0) {
