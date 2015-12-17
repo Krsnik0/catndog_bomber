@@ -40,4 +40,12 @@ public class IntegerPair {
 	{
 		return string.Format ("({0}, {1})", x, y);
 	}
+
+    public int xySum
+    {
+        get
+        {
+            return x + y;
+        }
+    }
 }

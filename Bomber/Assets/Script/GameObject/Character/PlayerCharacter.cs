@@ -31,14 +31,9 @@ public class PlayerCharacter : AbstractCharacter {
 
 	private void onInputEvent( AbstractEvent event_ )
 	{
-		/*switch (GameManager.getInstance ().currentState) {
-		case GameManager.GameState.PLAYING:
-			if (event_.target is GameMap) {
-				setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
-			}
-			break;
-		}*/
-		if (event_.target is GameMap) {
+        InputEvent inputEvent = event_ as InputEvent;
+
+		if ( inputEvent.inputType == InputEvent.InputType.TOUCH && event_.target is GameMap) {
 			setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
 		}
 	}

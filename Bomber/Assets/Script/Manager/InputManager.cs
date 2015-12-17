@@ -64,9 +64,11 @@ public class InputManager {
         }
 #endif
 
+        int clickableLayer = LayerUtil.clickableLayer;
+
         if (isInputDown) {
 			_dragOrigin = currentInputPos;
-			RaycastHit2D hit = Physics2D.Raycast (currentInputPos, Vector2.zero, 0f);
+            RaycastHit2D hit = Physics2D.Raycast(currentInputPos, Vector2.zero, 0f, clickableLayer);
 			if (hit.collider != null) {
 				_objAtDragOrigin = hit.collider.gameObject.GetComponentInParent<AbstractBoomscapeObject> ();
 			}
@@ -108,20 +110,18 @@ public class InputManager {
 				
 			if( !_isDragging )
 			{
-                RaycastHit2D hit = Physics2D.Raycast(currentInputPos, Vector2.zero, 0f);
+                RaycastHit2D hit = Physics2D.Raycast(currentInputPos, Vector2.zero, 0f, clickableLayer);
 
                 if (hit.collider != null)
                 {
                     AbstractBoomscapeObject gameObj = hit.collider.gameObject.GetComponentInParent<AbstractBoomscapeObject>();
-                    if (gameObj != null)
-                    {
-                        TouchInputEvent touch = new TouchInputEvent(gameObj);
-                        EventManager.getInstance().dispatchEvent(touch);
-                    }
+                    TouchInputEvent touch = new TouchInputEvent(gameObj);
+                    EventManager.getInstance().dispatchEvent(touch);
                 }
-                else if (GameManager.getInstance().currentState == GameManager.GameState.THROWING)
+                else
                 {
-                    GameManager.getInstance().changeState(GameManager.GameState.PLAYING);
+                    TouchInputEvent touch = new TouchInputEvent(currentInputPos);
+                    EventManager.getInstance().dispatchEvent(touch);
                 }
             }
 			else

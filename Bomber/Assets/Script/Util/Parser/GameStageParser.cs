@@ -51,23 +51,37 @@ public class GameStageParser {
 
 		// Parse entry point & player prefab data
 		XmlNode entryXML = stageDataXML.SelectSingleNode( "EntryPoint" );
-		ret.entryPoint = new IntegerPair (int.Parse (entryXML.SelectSingleNode ("x").InnerText),
-		                             int.Parse (entryXML.SelectSingleNode ("y").InnerText));
+		ret.entryPoint = new IntegerPair (int.Parse( entryXML.Attributes.GetNamedItem( "x" ).InnerText ),
+                                     int.Parse(entryXML.Attributes.GetNamedItem("y").InnerText ) );
 
-		ret.objLayer [ret.entryPoint.x] [ret.entryPoint.y] = CharacterDataManager.getInstance ().findCharacterData ("CHAR0000");
+		ret.objLayer [ret.entryPoint.y] [ret.entryPoint.x] = CharacterDataManager.getInstance ().findCharacterData ("CHAR0000");
 		usedObjects_.Add( CharacterDataManager.getInstance().findCharacterData( "CHAR0000" ).prefabData );
 
 		// Parse bomb data
-		XmlNodeList bombs = stageDataXML.SelectSingleNode ("Bombs").SelectNodes ("Code");
+		XmlNodeList bombs = stageDataXML.SelectSingleNode ("Bombs").SelectNodes ("Bomb");
 		AbstractBombValueObject allowedBomb;
 		ret.allowedBombs = new AbstractBombValueObject[bombs.Count];
 
 		for (i = 0; i < bombs.Count; ++ i) {
-			allowedBomb = BombDataManager.getInstance().findBombData( bombs[i].InnerText );
+			allowedBomb = BombDataManager.getInstance().findBombData( bombs[i].Attributes.GetNamedItem( "code" ).InnerText );
 			usedObjects_.Add( allowedBomb.prefabData );
 			usedObjects_.Add( allowedBomb.iconPath );
 			ret.allowedBombs[i] = allowedBomb;
 		}
+
+        XmlNodeList watchmen = stageDataXML.SelectSingleNode("Enemies").SelectNodes("Watchman");
+        CharacterValueObject character;
+        IntegerPair enemyPos = new IntegerPair( 0, 0 );
+        for (i = 0; i < watchmen.Count; ++i)
+        {
+            character = CharacterDataManager.getInstance().findCharacterData(watchmen[i].Attributes.GetNamedItem("code").InnerText);
+            usedObjects_.Add(character.prefabData);
+
+            enemyPos.x = int.Parse(watchmen[i].Attributes.GetNamedItem("x").InnerText);
+            enemyPos.y = int.Parse(watchmen[i].Attributes.GetNamedItem("y").InnerText);
+
+            ret.objLayer[enemyPos.y][enemyPos.x] = character;
+        }
 
 		// System blocks
 		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0000" ).prefabData );		// marker

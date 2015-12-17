@@ -25,7 +25,7 @@ public class PathFinder {
 
 		do {
 			currentPoint = openList.extract();
-            Debug.Log(currentPoint + "," + openList.heapSize);
+            //Debug.Log(currentPoint + "," + openList.heapSize);
 
             if ( currentPoint.ToString() == dst_.ToString() )
 			{

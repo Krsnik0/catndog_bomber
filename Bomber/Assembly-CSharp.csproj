@@ -1,119 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<RootNamespace></RootNamespace>
-	<ProjectGuid>{4EA5136C-03FE-CFA8-8B60-EF569E5A3CDA}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
-	<BaseDirectory>Assets</BaseDirectory>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectGuid>{4EA5136C-03FE-CFA8-8B60-EF569E5A3CDA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_5_2_2;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_2_2;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="System" />
+    <Reference Include="System" />
     <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\AbstractBoomscapeObject.cs" />
-     <Compile Include="Assets\Script\Data\Constant\GameMapConst.cs" />
-     <Compile Include="Assets\Script\Data\DataManager\AbstractDataManager.cs" />
-     <Compile Include="Assets\Script\Data\DataManager\BlockDataManager.cs" />
-     <Compile Include="Assets\Script\Data\DataManager\BombDataManager.cs" />
-     <Compile Include="Assets\Script\Data\DataManager\CharacterDataManager.cs" />
-     <Compile Include="Assets\Script\Data\Event\AbstractEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\GameObject\BombExplodeEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\GameObject\ObjectRemovedEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\Input\DragInputEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\Input\InputEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\Input\TouchInputEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\State\GameStateEvent.cs" />
-     <Compile Include="Assets\Script\Data\Event\UpdateRequest\UpdateRequestEvent.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\AbstractValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\AbstractGameObjectValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\BlockValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\AbstractBombValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\BombType1.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\CharacterValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\Game\StageValueObject.cs" />
-     <Compile Include="Assets\Script\Data\ValueObject\System\UI\UIValueObject.cs" />
-     <Compile Include="Assets\Script\GameObject\AbstractGameObject.cs" />
-     <Compile Include="Assets\Script\GameObject\Block\AbstractBlock.cs" />
-     <Compile Include="Assets\Script\GameObject\Block\FlameBlock.cs" />
-     <Compile Include="Assets\Script\GameObject\Block\InvincibleBlock.cs" />
-     <Compile Include="Assets\Script\GameObject\Block\MarkerBlock.cs" />
-     <Compile Include="Assets\Script\GameObject\Block\NormalBlock.cs" />
-     <Compile Include="Assets\Script\GameObject\Bomb\AbstractBomb.cs" />
-     <Compile Include="Assets\Script\GameObject\Bomb\NormalBomb.cs" />
-     <Compile Include="Assets\Script\GameObject\CameraScript.cs" />
-     <Compile Include="Assets\Script\GameObject\Character\AbstractCharacter.cs" />
-     <Compile Include="Assets\Script\GameObject\Character\PlayerCharacter.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\AbstractContainerObject.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\Map\GameMap.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\Map\Layer\AbstractLayer.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\Map\Layer\MarkerLayer.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\Map\Layer\ObjectLayer.cs" />
-     <Compile Include="Assets\Script\GameObject\Container\Map\Layer\TileLayer.cs" />
-     <Compile Include="Assets\Script\Manager\EventManager.cs" />
-     <Compile Include="Assets\Script\Manager\GameManager.cs" />
-     <Compile Include="Assets\Script\Manager\InputManager.cs" />
-     <Compile Include="Assets\Script\Manager\ResourceManager.cs" />
-     <Compile Include="Assets\Script\UI\AbstractUI.cs" />
-     <Compile Include="Assets\Script\UI\BombCursor.cs" />
-     <Compile Include="Assets\Script\UI\BombIconUI.cs" />
-     <Compile Include="Assets\Script\UI\BombLister.cs" />
-     <Compile Include="Assets\Script\UI\RootUI.cs" />
-     <Compile Include="Assets\Script\Util\Factory\GameObjectFactory.cs" />
-     <Compile Include="Assets\Script\Util\IntegerPair.cs" />
-     <Compile Include="Assets\Script\Util\Parser\GameStageParser.cs" />
-     <Compile Include="Assets\Script\Util\PathFinding\AStarPath.cs" />
-     <Compile Include="Assets\Script\Util\PathFinding\PathFinder.cs" />
-     <Compile Include="Assets\Script\Util\PathFinding\PathHeap.cs" />
-     <Compile Include="Assets\Script\Util\PositionCalcUtil.cs" />
-     <None Include="Assets\Resources\XML\Stage\Stage_0002.xml" />
-     <None Include="Assets\Resources\XML\Stage\Stage_0001.xml" />
- <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="Mono.Cecil">
- <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
- </Reference>
+    <Compile Include="Assets\Script\AbstractBoomscapeObject.cs" />
+    <Compile Include="Assets\Script\Data\Constant\GameMapConst.cs" />
+    <Compile Include="Assets\Script\Data\DataManager\AbstractDataManager.cs" />
+    <Compile Include="Assets\Script\Data\DataManager\BlockDataManager.cs" />
+    <Compile Include="Assets\Script\Data\DataManager\BombDataManager.cs" />
+    <Compile Include="Assets\Script\Data\DataManager\CharacterDataManager.cs" />
+    <Compile Include="Assets\Script\Data\Event\AbstractEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\GameObject\BombExplodeEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\GameObject\ObjectRemovedEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\Input\DragInputEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\Input\InputEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\Input\TouchInputEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\State\GameStateEvent.cs" />
+    <Compile Include="Assets\Script\Data\Event\UpdateRequest\UpdateRequestEvent.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\AbstractValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\AbstractGameObjectValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\BlockValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\AbstractBombValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\BombType1.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\CharacterValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\Game\StageValueObject.cs" />
+    <Compile Include="Assets\Script\Data\ValueObject\System\UI\UIValueObject.cs" />
+    <Compile Include="Assets\Script\GameObject\AbstractGameObject.cs" />
+    <Compile Include="Assets\Script\GameObject\Block\AbstractBlock.cs" />
+    <Compile Include="Assets\Script\GameObject\Block\FlameBlock.cs" />
+    <Compile Include="Assets\Script\GameObject\Block\InvincibleBlock.cs" />
+    <Compile Include="Assets\Script\GameObject\Block\MarkerBlock.cs" />
+    <Compile Include="Assets\Script\GameObject\Block\NormalBlock.cs" />
+    <Compile Include="Assets\Script\GameObject\Bomb\AbstractBomb.cs" />
+    <Compile Include="Assets\Script\GameObject\Bomb\NormalBomb.cs" />
+    <Compile Include="Assets\Script\GameObject\CameraScript.cs" />
+    <Compile Include="Assets\Script\GameObject\Character\AbstractCharacter.cs" />
+    <Compile Include="Assets\Script\GameObject\Character\EnemyWatchmanCharacter.cs" />
+    <Compile Include="Assets\Script\GameObject\Character\PlayerCharacter.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\AbstractContainerObject.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\Map\GameMap.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\Map\Layer\AbstractLayer.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\Map\Layer\MarkerLayer.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\Map\Layer\ObjectLayer.cs" />
+    <Compile Include="Assets\Script\GameObject\Container\Map\Layer\TileLayer.cs" />
+    <Compile Include="Assets\Script\Manager\EventManager.cs" />
+    <Compile Include="Assets\Script\Manager\GameManager.cs" />
+    <Compile Include="Assets\Script\Manager\InputManager.cs" />
+    <Compile Include="Assets\Script\Manager\ResourceManager.cs" />
+    <Compile Include="Assets\Script\UI\AbstractUI.cs" />
+    <Compile Include="Assets\Script\UI\BombCursor.cs" />
+    <Compile Include="Assets\Script\UI\BombIconUI.cs" />
+    <Compile Include="Assets\Script\UI\BombLister.cs" />
+    <Compile Include="Assets\Script\UI\RootUI.cs" />
+    <Compile Include="Assets\Script\Util\Factory\GameObjectFactory.cs" />
+    <Compile Include="Assets\Script\Util\IntegerPair.cs" />
+    <Compile Include="Assets\Script\Util\LayerUtil.cs" />
+    <Compile Include="Assets\Script\Util\Parser\GameStageParser.cs" />
+    <Compile Include="Assets\Script\Util\PathFinding\AStarPath.cs" />
+    <Compile Include="Assets\Script\Util\PathFinding\PathFinder.cs" />
+    <Compile Include="Assets\Script\Util\PathFinding\PathHeap.cs" />
+    <Compile Include="Assets\Script\Util\PositionCalcUtil.cs" />
+    <None Include="Assets\Resources\XML\Stage\Stage_0001.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -123,5 +127,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>
