@@ -30,33 +30,6 @@ public abstract class AbstractContainerObject : AbstractBoomscapeObject {
 		}
 	}
 
-	/*public override bool triggerInput (InputEvent input_)
-	{
-		bool retValue = false;
-		for (int i = _containingObjects.Count - 1; i >= 0; -- i) {
-			if( _containingObjects[i].triggerInput( input_ ) )
-			{
-				retValue = true;
-			}
-		}
-
-		return retValue;
-	}*/
-	
-	public override void onStateEnd (GameManager.GameState gameState_)
-	{
-		for (int i = _containingObjects.Count - 1; i >= 0; -- i) {
-			_containingObjects[i].onStateEnd( gameState_ );
-		}
-	}
-	
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
-		for (int i = _containingObjects.Count - 1; i >= 0; -- i) {
-			_containingObjects[i].onStateStart( gameState_ );
-		}
-	}
-
 	virtual public AbstractBoomscapeObject addObject( AbstractBoomscapeObject obj_ )
 	{
 		obj_.gameObject.transform.parent = transform;

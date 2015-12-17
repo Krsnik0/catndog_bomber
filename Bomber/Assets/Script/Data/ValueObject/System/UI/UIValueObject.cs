@@ -14,7 +14,7 @@ public class UIDataValueObject : AbstractValueObject {
 		return retValue;
 	}
 
-	public BombValueObject selectedBomb {
+	public AbstractBombValueObject selectedBomb {
 		get;
 		set;
 	}

@@ -1,128 +1,121 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
-	public enum GameState
-	{
-		LOADING,
-		PAUSED,
-		THROWING,
-		PLAYING
-	};
+public class GameManager : MonoBehaviour
+{
+    public enum GameState
+    {
+        LOADING,
+        PAUSED,
+        THROWING,
+        PLAYING
+    };
 
-	static private GameManager _instance;
+    static private GameManager _instance;
 
-	private bool _initFlag;
+    private bool _initFlag;
 
-	private GameState _currentState;
+    private GameState _currentState;
 
-	private GameMap _map;
-	private RootUI _rootUI;
-	private StageValueObject _stageData;
+    private GameMap _map;
+    private RootUI _rootUI;
+    private StageValueObject _stageData;
 
-	// Use this for initialization
-	void Start () {
-	
-		_instance = this;
-		_currentState = GameState.LOADING;
+    // Use this for initialization
+    void Start()
+    {
 
-		_map = GetComponentInChildren<GameMap> ();
-		_rootUI = GetComponentInChildren<RootUI> ();
-		_initFlag = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (!_initFlag) {
-			_initFlag = true;
+        _instance = this;
+        _currentState = GameState.LOADING;
 
-			BlockDataManager.getInstance ().loadData ();
-			CharacterDataManager.getInstance ().loadData ();
-			BombDataManager.getInstance().loadData();
+        _map = GetComponentInChildren<GameMap>();
+        _rootUI = GetComponentInChildren<RootUI>();
+        _initFlag = false;
+    }
 
-			List<KeyValuePair<System.Type, string>> usedObjects;
-			_stageData = GameStageParser.parseMap( "stage_0001", out usedObjects );
+    // Update is called once per frame
+    void Update()
+    {
+        if (!_initFlag)
+        {
+            _initFlag = true;
 
-			StartCoroutine( ResourceManager.getInstance().LoadResourcesByCoroutine(usedObjects, onResourceLoaded) );
-		}
+            BlockDataManager.getInstance().loadData();
+            CharacterDataManager.getInstance().loadData();
+            BombDataManager.getInstance().loadData();
 
-		triggerInput ();
-	}
-	
-	private void triggerInput()
-	{
-		if (Input.GetMouseButtonDown (0)) {
-			TouchInputEvent input;
-			
-			if( EventSystem.current.IsPointerOverGameObject() )
-			{
-			}
-			else
-			{
-				RaycastHit2D hit = Physics2D.Raycast( Camera.main.ScreenToWorldPoint( Input.mousePosition ),Vector2.zero, 0f );
-				if( hit.collider != null )
-				{
-					AbstractBoomscapeObject gameObj = hit.collider.gameObject.GetComponentInParent<AbstractBoomscapeObject>();
+            List<KeyValuePair<System.Type, string>> usedObjects;
+            _stageData = GameStageParser.parseMap("stage_0001", out usedObjects);
 
-					if( gameObj != null )
-					{
-						TouchInputEvent touch = new TouchInputEvent( gameObj );
-						EventManager.getInstance().dispatchEvent( touch );
-					}
-				}
-				else if( _currentState == GameState.THROWING )
-				{
-					changeState( GameState.PLAYING );
-				}
-			}
-		}
-	}
+            StartCoroutine(ResourceManager.getInstance().LoadResourcesByCoroutine(usedObjects, onResourceLoaded));
+        }
 
-	static public GameManager getInstance()
-	{
-		return _instance;
-	}
+        InputManager.getInstance().triggerInput();
+    }
 
-	public GameState currentState
-	{
-		get {
-			return _currentState;
-		}
-	}
+    static public GameManager getInstance()
+    {
+        return _instance;
+    }
 
-	private void onResourceLoaded()
-	{
-		changeState (GameState.PLAYING);
-	}
+    public GameState currentState
+    {
+        get
+        {
+            return _currentState;
+        }
+    }
 
-	public void changeState( GameState newState_ )
-	{
-		if (_currentState != newState_) {
-			Debug.Log ("State change : " + _currentState.ToString () + " -> " + newState_.ToString ());
-			onStateEnd (_currentState);
-			_currentState = newState_;
-			onStateStart (_currentState);
-		}
-	}
+    private void onResourceLoaded()
+    {
+        changeState(GameState.PLAYING);
+    }
 
-	private void onStateEnd( GameState state_ )
-	{
-		switch (state_) {
-		case GameState.LOADING:
-			_map.loadStage( _stageData );
-			_rootUI.loadStageUI( _stageData );
-			break;
-		}
+    public void changeState(GameState newState_)
+    {
+        if (_currentState != newState_)
+        {
+            Debug.Log("State change : " + _currentState.ToString() + " -> " + newState_.ToString());
+            EventManager.getInstance().dispatchEvent(new GameStateEvent(_currentState, newState_));
+            onStateEnd(_currentState);
+            _currentState = newState_;
+            onStateStart(_currentState);
+        }
+    }
 
-		_rootUI.onStateEnd (state_);
-		_map.onStateEnd (state_);
-	}
+    private void onInputEvent(AbstractEvent event_)
+    {
+        if( currentState == GameState.THROWING && ( event_.target == null || event_.target is GameMap ) )
+        {
+            changeState(GameState.PLAYING);
+        }
+    }
 
-	private void onStateStart( GameState state_ )
-	{
-		_rootUI.onStateStart (state_);
-		_map.onStateStart (state_);
-	}
+    private void onStateEnd(GameState state_)
+    {
+        switch (state_)
+        {
+            case GameState.LOADING:
+                _map.loadStage(_stageData);
+                _rootUI.loadStageUI(_stageData);
+
+                EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
+                break;
+            case GameState.THROWING:
+                Time.timeScale = 1f;
+                break;
+        }
+    }
+
+    private void onStateStart(GameState state_)
+    {
+        switch (state_)
+        {
+            case GameState.THROWING:
+                Time.timeScale = 0.1f;
+                //Time.fixedDeltaTime = Time.fixedDeltaTime
+                break;
+        }
+    }
 }

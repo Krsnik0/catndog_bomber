@@ -24,8 +24,9 @@ public class CharacterDataManager : AbstractDataManager {
 	
 	public override void loadData ()
 	{
-		_hashmap.Add( "CHAR0000", new CharacterValueObject( "CHAR0000" ) );
-	}
+        _hashmap.Add("CHAR0000", new CharacterValueObject("CHAR0000"));
+        _hashmap.Add("CHAR0001", new CharacterValueObject("CHAR0001"));
+    }
 	
 	public CharacterValueObject findCharacterData( string code_ )
 	{

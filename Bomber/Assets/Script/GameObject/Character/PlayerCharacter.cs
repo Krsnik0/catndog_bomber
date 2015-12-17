@@ -31,29 +31,11 @@ public class PlayerCharacter : AbstractCharacter {
 
 	private void onInputEvent( AbstractEvent event_ )
 	{
-		switch (GameManager.getInstance ().currentState) {
-		case GameManager.GameState.PLAYING:
-			if (event_.target is GameMap) {
-				setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
-			}
-			break;
-		}
-	}
+        InputEvent inputEvent = event_ as InputEvent;
 
-	/*public override bool triggerInput (InputEvent input_)
-	{
-		switch (GameManager.getInstance ().currentState) {
-		case GameManager.GameState.PLAYING:
-			setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (input_.touchPosition) ) );
-			break;
+		if ( inputEvent.inputType == InputEvent.InputType.TOUCH && event_.target is GameMap) {
+			setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
 		}
-		return false;
-	}*/
-
-	public override void destroyObject ()
-	{
-		GameMap.getInstance ().removeObject (this);
-		Destroy (gameObject);
 	}
 
 	public override float speed {
@@ -62,7 +44,7 @@ public class PlayerCharacter : AbstractCharacter {
 		}
 	}
 
-	public override void onExplosion (BombValueObject bombData_)
+	public override void onExplosion (AbstractBombValueObject bombData_)
 	{
 		destroyObject ();
 	}

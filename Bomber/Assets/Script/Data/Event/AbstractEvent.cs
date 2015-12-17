@@ -9,12 +9,16 @@ public abstract class AbstractEvent {
 		_target = target_;
 	}
 
+	public AbstractEvent()
+	{
+		_target = null;
+	}
+
 	public AbstractBoomscapeObject target {
 		get {
 			return _target;
 		}
 	}
-
-	public bool isBubbling { get; set; }
+	
 	abstract public string eventKey { get; }
 }

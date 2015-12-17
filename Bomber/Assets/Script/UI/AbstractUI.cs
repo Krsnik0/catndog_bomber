@@ -12,14 +12,6 @@ public abstract class AbstractUI : AbstractBoomscapeObject {
 
 	private Vector3 _prevScale;
 
-	public RectTransform rTransform
-	{
-		get
-		{
-			return (RectTransform)transform;
-		}
-	}
-
 	// Use this for initialization
 	void Start () {
 		initObject ();
@@ -56,24 +48,6 @@ public abstract class AbstractUI : AbstractBoomscapeObject {
 			if( childUI != null )
 			{
 				_childrenUI.Add( childUI );
-			}
-		}
-	}
-
-	public override void onStateStart (GameManager.GameState gameState_)
-	{
-		if (_childrenUI != null) {
-			for (int i = _childrenUI.Count - 1; i >= 0; -- i) {
-				_childrenUI [i].onStateEnd (gameState_);
-			}
-		}
-	}
-
-	public override void onStateEnd (GameManager.GameState gameState_)
-	{
-		if (_childrenUI != null) {
-			for (int i = _childrenUI.Count - 1; i >= 0; -- i) {
-				_childrenUI [i].onStateEnd (gameState_);
 			}
 		}
 	}

@@ -38,9 +38,13 @@ public class EventManager {
 
 	public void dispatchEvent( AbstractEvent event_ )
 	{
-		for( int i = 0; i < _listeners[ event_.eventKey ].Count; ++ i )
-		{
-			_listeners[ event_.eventKey ][i]( event_ );
-		}
+        if (_listeners.ContainsKey(event_.eventKey))
+        {
+            for (int i = _listeners[event_.eventKey].Count - 1; i >= 0; --i)
+            {
+                _listeners[event_.eventKey][i](event_);
+            }
+        }
+		
 	}
 }
