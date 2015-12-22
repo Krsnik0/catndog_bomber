@@ -11,6 +11,12 @@ public class IntegerPair {
 		this.y = y_;
 	}
 
+    public IntegerPair()
+    {
+        this.x = 0;
+        this.y = 0;
+    }
+
 	public IntegerPair clone()
 	{
 		return new IntegerPair( x, y );

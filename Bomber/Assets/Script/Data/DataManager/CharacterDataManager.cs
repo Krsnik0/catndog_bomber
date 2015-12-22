@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class CharacterDataManager : AbstractDataManager {
 
 	static private CharacterDataManager _instance;
-	
+
+    private bool _initFlag = false;
 	private Dictionary<string, CharacterValueObject> _hashmap;
 	
 	static public CharacterDataManager getInstance()
@@ -24,8 +25,13 @@ public class CharacterDataManager : AbstractDataManager {
 	
 	public override void loadData ()
 	{
-        _hashmap.Add("CHAR0000", new CharacterValueObject("CHAR0000"));
-        _hashmap.Add("CHAR0001", new CharacterValueObject("CHAR0001"));
+        if (!_initFlag)
+        {
+            _initFlag = true;
+
+            _hashmap.Add("CHAR0000", new CharacterValueObject("CHAR0000"));
+            _hashmap.Add("CHAR0001", new CharacterValueObject("CHAR0001"));
+        }
     }
 	
 	public CharacterValueObject findCharacterData( string code_ )

@@ -72,7 +72,7 @@ public abstract class AbstractLayer : AbstractContainerObject {
 				if( layerData_[i][j] != null )
 				{
 					gameObj = GameObjectFactory.getInstance().generateObject( layerData_[i][j].prefabData.Value );
-					gameObj.transform.position = PositionCalcUtil.mapIndexToVector3( new IntegerPair( j, i ) );
+					gameObj.transform.position = PositionCalcUtil.mapIndexToVector3( new IntegerPair( i, j ) );
 					addObject( gameObj.GetComponent<AbstractGameObject>() );
 				}
 			}
@@ -112,6 +112,7 @@ public abstract class AbstractLayer : AbstractContainerObject {
 			_nonObstacleObjects.Add (obj_);
 		} else {
 			IntegerPair idxPair = obj_.positionIndexPair;
+            Debug.Log(idxPair);
 			_obstacleHashmap[ idxPair.x ][ idxPair.y ] = obj_;
 		}
 		return base.addObject (obj_);

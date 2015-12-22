@@ -68,7 +68,7 @@ public class GameMap : AbstractContainerObject
 
     public void loadStage(StageValueObject mapData_)
     {
-        mapSize = new IntegerPair(mapData_.objLayer.Length, mapData_.objLayer[0].Length);
+        mapSize = mapData_.mapSize.clone();
         _objectLayer.loadLayer(mapData_.objLayer);
         _tileLayer.loadEmptyLayer(mapSize);
         _markerLayer.loadEmptyLayer(mapSize);

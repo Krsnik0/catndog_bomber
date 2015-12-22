@@ -8,6 +8,8 @@ public class StageValueObject : AbstractValueObject {
 	public AbstractBombValueObject[] allowedBombs { get; set; }
 
 	public IntegerPair entryPoint { get; set; }
+    public IntegerPair goal { get; set; }
+    public IntegerPair mapSize { get; set; }
 
 	public StageValueObject()
 	{
@@ -19,6 +21,8 @@ public class StageValueObject : AbstractValueObject {
 		ret.objLayer = this.objLayer;
 		ret.tileLayer = this.tileLayer;
 		ret.entryPoint = this.entryPoint;
+        ret.goal = this.goal;
+        ret.mapSize = this.mapSize;
 
 		return ret;
 	}

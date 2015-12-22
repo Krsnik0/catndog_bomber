@@ -77,7 +77,7 @@ public class EnemyWatchmanCharacter : AbstractCharacter {
                 }
                 else if( positionIndexPair.sub( _chaseTarget.positionIndexPair).xySum > 10 )
                 {
-                    
+                    backToWork();
                 }
                 else if (!isPathExist)
                 {
@@ -87,6 +87,11 @@ public class EnemyWatchmanCharacter : AbstractCharacter {
             default:
                 break;
         }
+    }
+
+    protected override void onBlockedWhileMoving()
+    {
+        backToWork();
     }
 
     private void backToWork()
