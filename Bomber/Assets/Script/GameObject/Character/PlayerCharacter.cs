@@ -27,6 +27,8 @@ public class PlayerCharacter : AbstractCharacter {
 	protected override void updateObject ()
 	{
 		base.updateObject ();
+
+        GameMap.getInstance().checkCleared();
 	}
 
 	private void onInputEvent( AbstractEvent event_ )
@@ -34,7 +36,8 @@ public class PlayerCharacter : AbstractCharacter {
         InputEvent inputEvent = event_ as InputEvent;
 
 		if ( inputEvent.inputType == InputEvent.InputType.TOUCH && event_.target is GameMap) {
-			setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, PositionCalcUtil.vector3ToMapIndex (Camera.main.ScreenToWorldPoint( Input.mousePosition ) ) ) );
+            IntegerPair dst = PositionCalcUtil.vector3ToMapIndex(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+			setPath (PathFinder.findPath( GameMap.getInstance(), positionIndexPair, dst ) );
 		}
 	}
 
@@ -48,4 +51,10 @@ public class PlayerCharacter : AbstractCharacter {
 	{
 		destroyObject ();
 	}
+
+    public override void destroyObject()
+    {
+        GameManager.getInstance().changeState(GameManager.GameState.GAME_OVER);
+        base.destroyObject();
+    }
 }

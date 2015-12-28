@@ -9,6 +9,10 @@ public class RootUI : AbstractUI {
 
 	private BombLister _bombLister;
 	private UIDataValueObject _uiData;
+
+    private GameOverMsgUI _gameOverMsg;
+    private StageClearMsgUI _stageClearMsg;
+
 	// Use this for initialization
 	void Start () {
 		initObject ();
@@ -34,6 +38,13 @@ public class RootUI : AbstractUI {
 			_uiData = new UIDataValueObject();
 			_rootUIInitFlag = true;
 			_bombLister = GetComponentInChildren<BombLister>();
+            _gameOverMsg = GetComponentInChildren<GameOverMsgUI>();
+            _stageClearMsg = GetComponentInChildren<StageClearMsgUI>();
+
+            _gameOverMsg.setVisibility(false);
+            _stageClearMsg.setVisibility(false);
+
+            EventManager.getInstance().addEventListener(GameStateEvent.STATE_EVENT_KEY, onStateChanged);
 		}
 	}
 
@@ -68,4 +79,19 @@ public class RootUI : AbstractUI {
 		updateUIData ();
 		EventManager.getInstance().dispatchEvent( new UpdateRequestEvent( typeof( GameMap ) ) );
 	}
+
+    private void onStateChanged(AbstractEvent event_)
+    {
+        GameStateEvent stateEvent = event_ as GameStateEvent;
+
+        switch (stateEvent.nextState)
+        {
+            case GameManager.GameState.GAME_OVER:
+                _gameOverMsg.setVisibility(true);
+                break;
+            case GameManager.GameState.CLEAR:
+                _stageClearMsg.setVisibility(true);
+                break;
+        }
+    }
 }

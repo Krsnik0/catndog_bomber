@@ -44,10 +44,10 @@ public class EnemyWatchmanCharacter : AbstractCharacter {
             case WatchmanState.WATCHING:
                 Vector2 pos = transform.position;
                 RaycastHit2D[] hits = new RaycastHit2D[4];
-                hits[0] = Physics2D.Raycast(pos, new Vector2( -1, 0 ), ViewRange * GameMapConst.BLOCK_SIZE, LayerUtil.sightBlockLayer);
-                hits[1] = Physics2D.Raycast(pos, new Vector2(1, 0), ViewRange * GameMapConst.BLOCK_SIZE, LayerUtil.sightBlockLayer);
-                hits[2] = Physics2D.Raycast(pos, new Vector2(0, 1), ViewRange * GameMapConst.BLOCK_SIZE, LayerUtil.sightBlockLayer);
-                hits[3] = Physics2D.Raycast(pos, new Vector2(0, -1), ViewRange * GameMapConst.BLOCK_SIZE, LayerUtil.sightBlockLayer);
+                hits[0] = Physics2D.Raycast(pos, new Vector2( -1, 0 ), ViewRange * GameMapConst.BLOCK_SIZE_WIDTH, LayerUtil.sightBlockLayer);
+                hits[1] = Physics2D.Raycast(pos, new Vector2(1, 0), ViewRange * GameMapConst.BLOCK_SIZE_WIDTH, LayerUtil.sightBlockLayer);
+                hits[2] = Physics2D.Raycast(pos, new Vector2(0, 1), ViewRange * GameMapConst.BLOCK_SIZE_HEIGHT, LayerUtil.sightBlockLayer);
+                hits[3] = Physics2D.Raycast(pos, new Vector2(0, -1), ViewRange * GameMapConst.BLOCK_SIZE_HEIGHT, LayerUtil.sightBlockLayer);
 
                 PlayerCharacter player;
 

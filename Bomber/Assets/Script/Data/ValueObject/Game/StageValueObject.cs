@@ -4,7 +4,7 @@ using System.Collections;
 public class StageValueObject : AbstractValueObject {
 
 	public AbstractGameObjectValueObject[][] objLayer { get; set; }
-	public AbstractGameObjectValueObject[][] tileLayer { get; set; }
+    public AbstractGameObjectValueObject[][] tileLayer { get; set; }
 	public AbstractBombValueObject[] allowedBombs { get; set; }
 
 	public IntegerPair entryPoint { get; set; }

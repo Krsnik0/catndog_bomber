@@ -25,7 +25,6 @@ public class PathFinder {
 
 		do {
 			currentPoint = openList.extract();
-            //Debug.Log(currentPoint + "," + openList.heapSize);
 
             if ( currentPoint.ToString() == dst_.ToString() )
 			{
@@ -34,33 +33,36 @@ public class PathFinder {
 			}
 			else
 			{
-				closedList.Add( currentPoint.ToString(), currentPoint );
-				AStarPath[] adjacents = new AStarPath[4];
+                if (!closedList.ContainsKey(currentPoint.ToString()))
+                {
+                    closedList.Add(currentPoint.ToString(), currentPoint);
+                    AStarPath[] adjacents = new AStarPath[4];
 
-				adjacents[0] = new AStarPath( currentPoint.x + 1, currentPoint.y );
-				adjacents[1] = new AStarPath( currentPoint.x - 1, currentPoint.y );
-				adjacents[2] = new AStarPath( currentPoint.x, currentPoint.y + 1 );
-				adjacents[3] = new AStarPath( currentPoint.x, currentPoint.y - 1 );
+                    adjacents[0] = new AStarPath(currentPoint.x + 1, currentPoint.y);
+                    adjacents[1] = new AStarPath(currentPoint.x - 1, currentPoint.y);
+                    adjacents[2] = new AStarPath(currentPoint.x, currentPoint.y + 1);
+                    adjacents[3] = new AStarPath(currentPoint.x, currentPoint.y - 1);
 
-				for( i = 0; i < adjacents.Length; ++ i )
-				{
-					if( map_.isMovable( adjacents[i].x, adjacents[i].y ) )
-					{
-						adjacents[i].cost = currentPoint.cost + 1;
-						adjacents[i].header = currentPoint;
-						if( closedList.ContainsKey( adjacents[i].ToString() ) )
-						{
-							if( closedList[ adjacents[i].ToString() ].cost > adjacents[i].cost )
-							{
-								closedList[ adjacents[i].ToString() ] = adjacents[i];
-							}
-						}
-						else
-						{
-							openList.insert( adjacents[i] );
-						}
-					}
-				}
+                    for (i = 0; i < adjacents.Length; ++i)
+                    {
+                        if (map_.isMovable(adjacents[i].x, adjacents[i].y))
+                        {
+                            adjacents[i].cost = currentPoint.cost + 1;
+                            adjacents[i].header = currentPoint;
+                            if (closedList.ContainsKey(adjacents[i].ToString()))
+                            {
+                                if (closedList[adjacents[i].ToString()].cost > adjacents[i].cost)
+                                {
+                                    closedList[adjacents[i].ToString()] = adjacents[i];
+                                }
+                            }
+                            else
+                            {
+                                openList.insert(adjacents[i]);
+                            }
+                        }
+                    }
+                }
 			}
 
 		} while( openList.heapSize > 0 );

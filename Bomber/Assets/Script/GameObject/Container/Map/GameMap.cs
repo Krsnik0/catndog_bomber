@@ -14,6 +14,7 @@ public class GameMap : AbstractContainerObject
     private bool _mapInitFlag = false;
     private bool _mapUpdatePerFrameFlag;            // updateMap method must be called once per frame
 
+    private StageValueObject _stageData;
     private MarkerLayer _markerLayer;
     private ObjectLayer _objectLayer;
     private TileLayer _tileLayer;
@@ -68,15 +69,29 @@ public class GameMap : AbstractContainerObject
 
     public void loadStage(StageValueObject mapData_)
     {
+        _stageData = mapData_;
+
         mapSize = mapData_.mapSize.clone();
         _objectLayer.loadLayer(mapData_.objLayer);
-        _tileLayer.loadEmptyLayer(mapSize);
+        _tileLayer.loadLayer(mapData_.tileLayer);
         _markerLayer.loadEmptyLayer(mapSize);
 
         boxCollider = gameObject.AddComponent<BoxCollider2D>();
-        boxCollider.size = new Vector2(mapSize.x * GameMapConst.BLOCK_SIZE, mapSize.y * GameMapConst.BLOCK_SIZE);
+        boxCollider.size = new Vector2(mapSize.x * GameMapConst.BLOCK_SIZE_WIDTH, mapSize.y * GameMapConst.BLOCK_SIZE_HEIGHT);
         boxCollider.offset = boxCollider.size / 2;
         EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
+    }
+
+    public bool checkCleared()
+    {
+        bool ret = _stageData.goal.ToString() == _objectLayer.playerCharacter.positionIndexPair.ToString();
+
+        if (ret)
+        {
+            GameManager.getInstance().changeState(GameManager.GameState.CLEAR);
+        }
+
+        return ret;
     }
 
     public bool isMovable(int x_, int y_)

@@ -10,6 +10,6 @@ public class TileLayer : AbstractLayer {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        updateObject();
 	}
 }

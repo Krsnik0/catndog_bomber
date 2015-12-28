@@ -7,10 +7,15 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         LOADING,
+        LOOK_AROUND,
         PAUSED,
         THROWING,
-        PLAYING
+        PLAYING,
+        CLEAR,
+        GAME_OVER
     };
+
+    public float _lookAroundTime;
 
     static private GameManager _instance;
 
@@ -22,7 +27,6 @@ public class GameManager : MonoBehaviour
     private RootUI _rootUI;
     private StageValueObject _stageData;
 
-    // Use this for initialization
     void Start()
     {
 
@@ -34,13 +38,13 @@ public class GameManager : MonoBehaviour
         _initFlag = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!_initFlag)
         {
             _initFlag = true;
 
+            TileDataManager.getInstance().loadData();
             BlockDataManager.getInstance().loadData();
             CharacterDataManager.getInstance().loadData();
             BombDataManager.getInstance().loadData();
@@ -51,7 +55,21 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ResourceManager.getInstance().LoadResourcesByCoroutine(usedObjects, onResourceLoaded));
         }
 
-        InputManager.getInstance().triggerInput();
+        switch (_currentState)
+        {
+            case GameState.LOADING:
+                break;
+            case GameState.LOOK_AROUND:
+                break;
+            case GameState.GAME_OVER:
+                break;
+            case GameState.CLEAR:
+                break;
+            default:
+                InputManager.getInstance().triggerInput();
+                break;
+
+        }
     }
 
     static public GameManager getInstance()
@@ -69,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     private void onResourceLoaded()
     {
-        changeState(GameState.PLAYING);
+        changeState(GameState.LOOK_AROUND);
     }
 
     public void changeState(GameState newState_)
@@ -112,10 +130,26 @@ public class GameManager : MonoBehaviour
     {
         switch (state_)
         {
+            case GameState.LOOK_AROUND:
+                Camera.main.GetComponent<CameraScript>().moveCamTo(PositionCalcUtil.mapIndexToVector3(_stageData.goal), _lookAroundTime);
+                Invoke("onCamOnGoal", _lookAroundTime);
+                break;
             case GameState.THROWING:
                 Time.timeScale = 0.1f;
-                //Time.fixedDeltaTime = Time.fixedDeltaTime
                 break;
         }
+    }
+
+
+    // TODO : refactor. implement cam action queue
+    private void onCamOnGoal()
+    {
+        Camera.main.GetComponent<CameraScript>().moveCamTo(PositionCalcUtil.mapIndexToVector3(_stageData.entryPoint), _lookAroundTime);
+        Invoke("onCamReturn", _lookAroundTime);
+    }
+
+    private void onCamReturn()
+    {
+        changeState(GameState.PLAYING);
     }
 }

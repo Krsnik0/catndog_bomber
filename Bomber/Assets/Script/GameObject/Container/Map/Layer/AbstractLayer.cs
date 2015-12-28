@@ -112,7 +112,6 @@ public abstract class AbstractLayer : AbstractContainerObject {
 			_nonObstacleObjects.Add (obj_);
 		} else {
 			IntegerPair idxPair = obj_.positionIndexPair;
-            Debug.Log(idxPair);
 			_obstacleHashmap[ idxPair.x ][ idxPair.y ] = obj_;
 		}
 		return base.addObject (obj_);
@@ -125,7 +124,10 @@ public abstract class AbstractLayer : AbstractContainerObject {
 		if (obj_.isObstacle) {
 			idxPair = obj_.positionIndexPair;
 
-			_obstacleHashmap [idxPair.x] [idxPair.y] = null;
+            if (_obstacleHashmap[idxPair.x][idxPair.y] == obj_)
+            {
+                _obstacleHashmap[idxPair.x][idxPair.y] = null;
+            }
 		}
 
 		return base.removeObject (obj_);

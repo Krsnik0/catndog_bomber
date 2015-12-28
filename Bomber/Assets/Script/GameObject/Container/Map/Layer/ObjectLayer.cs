@@ -58,7 +58,7 @@ public class ObjectLayer : AbstractLayer {
 			{
 				if( explosionShape[i][j] )
 				{
-					currentEffectPos = bombPos.sub( bombCenter ).add( new IntegerPair( i, j ) );
+					currentEffectPos = bombPos.clone().sub( bombCenter ).add( new IntegerPair( i, j ) );
 
                     if (0 <= currentEffectPos.x && currentEffectPos.x < layerSize.x &&
                        0 <= currentEffectPos.y && currentEffectPos.y < layerSize.y)
@@ -71,6 +71,7 @@ public class ObjectLayer : AbstractLayer {
                         flameBlock = GameObjectFactory.getInstance().generateObject(BlockDataManager.getInstance().findBlockData("SYSBLOCK0001").prefabData.Value).GetComponent<FlameBlock>();
                         flameBlock.positionIndexPair = currentEffectPos.clone();
                         flameBlock.transform.parent = transform;        // WARNING: must not add to layerHashmap. May overwrite not destructed block.
+
 
                         for (k = _nonObstacleObjects.Count - 1; k >= 0; --k)
                         {

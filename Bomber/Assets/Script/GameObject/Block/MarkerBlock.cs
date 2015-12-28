@@ -51,8 +51,7 @@ public class MarkerBlock : AbstractBlock {
 	{
 		EventManager.getInstance().removeEventListener( GameStateEvent.STATE_EVENT_KEY, onStateChanged );
 		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
-		//GameMap.getInstance ().removeObject (this);
-		GameObject.Destroy (gameObject);
+		Destroy (gameObject);
 	}
 }
 

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
 public class GameStageParser {
-	static public StageValueObject parseMap( string stage_, out List<KeyValuePair<System.Type, string>> usedObjects_ )
+	static public StageValueObject parseMap( string stage_, out List<KeyValuePair<Type, string>> usedObjects_ )
 	{
 		string stageXMLPath = "XML/Stage/" + stage_;
 		
@@ -30,12 +29,14 @@ public class GameStageParser {
 		int i,j;
 
 		ret.objLayer = new AbstractGameObjectValueObject[ret.mapSize.x][];
-		usedObjects_ = new List<KeyValuePair<Type, string>> ();
+        ret.tileLayer = new AbstractGameObjectValueObject[ret.mapSize.x][];
+        usedObjects_ = new List<KeyValuePair<Type, string>> ();
 		
 		for( i = 0; i < ret.mapSize.x; ++ i )
 		{
 			ret.objLayer[i] = new AbstractGameObjectValueObject[ret.mapSize.y];
-			for( j = 0; j < ret.mapSize.y; ++ j )
+            ret.tileLayer[i] = new AbstractGameObjectValueObject[ret.mapSize.y];
+            for ( j = 0; j < ret.mapSize.y; ++ j )
 			{
 				objInPos = BlockDataManager.getInstance().findBlockData( objInLayer[ i + j * ret.mapSize.x ] );
                 if (objInPos == null)
@@ -63,6 +64,9 @@ public class GameStageParser {
         XmlNode goalXML = stageDataXML.SelectSingleNode("Goal");
         ret.goal = new IntegerPair(int.Parse(goalXML.Attributes.GetNamedItem("x").InnerText),
                                      int.Parse(goalXML.Attributes.GetNamedItem("y").InnerText));
+
+        ret.tileLayer[ret.entryPoint.x][ret.entryPoint.y] = TileDataManager.getInstance().findTileData("SYSTILE0000");
+        ret.tileLayer[ret.goal.x][ret.goal.y] = TileDataManager.getInstance().findTileData("SYSTILE0001");
 
         ret.objLayer [ret.entryPoint.y] [ret.entryPoint.x] = CharacterDataManager.getInstance ().findCharacterData ("CHAR0000");
 		usedObjects_.Add( CharacterDataManager.getInstance().findCharacterData( "CHAR0000" ).prefabData );
@@ -94,10 +98,12 @@ public class GameStageParser {
         }
         */
 
-		// System blocks
+		// System blocks & tiles
 		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0000" ).prefabData );		// marker
 		usedObjects_.Add( BlockDataManager.getInstance().findBlockData( "SYSBLOCK0001" ).prefabData );		// flame
+        usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0000").prefabData);      // entry
+        usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0001").prefabData);      // goal
 
-		return ret;
+        return ret;
 	}
 }

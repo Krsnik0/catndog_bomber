@@ -51,6 +51,7 @@
      <Compile Include="Assets\Script\Data\DataManager\BlockDataManager.cs" />
      <Compile Include="Assets\Script\Data\DataManager\BombDataManager.cs" />
      <Compile Include="Assets\Script\Data\DataManager\CharacterDataManager.cs" />
+     <Compile Include="Assets\Script\Data\DataManager\TileDataManager.cs" />
      <Compile Include="Assets\Script\Data\Event\AbstractEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\GameObject\BombExplodeEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\GameObject\ObjectRemovedEvent.cs" />
@@ -65,6 +66,7 @@
      <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\AbstractBombValueObject.cs" />
      <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\Bomb\BombType1.cs" />
      <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\CharacterValueObject.cs" />
+     <Compile Include="Assets\Script\Data\ValueObject\Game\GameObject\TileValueObject.cs" />
      <Compile Include="Assets\Script\Data\ValueObject\Game\StageValueObject.cs" />
      <Compile Include="Assets\Script\Data\ValueObject\System\UI\UIValueObject.cs" />
      <Compile Include="Assets\Script\GameObject\AbstractGameObject.cs" />
@@ -85,6 +87,9 @@
      <Compile Include="Assets\Script\GameObject\Container\Map\Layer\MarkerLayer.cs" />
      <Compile Include="Assets\Script\GameObject\Container\Map\Layer\ObjectLayer.cs" />
      <Compile Include="Assets\Script\GameObject\Container\Map\Layer\TileLayer.cs" />
+     <Compile Include="Assets\Script\GameObject\Tile\AbstractTile.cs" />
+     <Compile Include="Assets\Script\GameObject\Tile\EntryTile.cs" />
+     <Compile Include="Assets\Script\GameObject\Tile\GoalTile.cs" />
      <Compile Include="Assets\Script\Manager\EventManager.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.cs" />
      <Compile Include="Assets\Script\Manager\InputManager.cs" />
@@ -93,7 +98,9 @@
      <Compile Include="Assets\Script\UI\BombCursor.cs" />
      <Compile Include="Assets\Script\UI\BombIconUI.cs" />
      <Compile Include="Assets\Script\UI\BombLister.cs" />
+     <Compile Include="Assets\Script\UI\GameOverMsgUI.cs" />
      <Compile Include="Assets\Script\UI\RootUI.cs" />
+     <Compile Include="Assets\Script\UI\StageClearMsgUI.cs" />
      <Compile Include="Assets\Script\Util\Factory\GameObjectFactory.cs" />
      <Compile Include="Assets\Script\Util\IntegerPair.cs" />
      <Compile Include="Assets\Script\Util\LayerUtil.cs" />
@@ -102,6 +109,7 @@
      <Compile Include="Assets\Script\Util\PathFinding\PathFinder.cs" />
      <Compile Include="Assets\Script\Util\PathFinding\PathHeap.cs" />
      <Compile Include="Assets\Script\Util\PositionCalcUtil.cs" />
+     <None Include="Assets\Resources\XML\Stage\Stage_0001_backup2.xml" />
      <None Include="Assets\Resources\XML\Stage\Stage_0001_backup.xml" />
      <None Include="Assets\Resources\XML\Stage\Stage_0001.xml" />
  <Reference Include="UnityEngine.UI">

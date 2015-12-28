@@ -32,6 +32,7 @@ public class BlockDataManager : AbstractDataManager {
             _hashmap.Add("SYSBLOCK0001", new BlockValueObject("SYSBLOCK0001"));
             _hashmap.Add("BLOCK0000", new BlockValueObject("BLOCK0000"));
             _hashmap.Add("BLOCK0001", new BlockValueObject("BLOCK0001"));
+            _hashmap.Add("BLOCK0002", new BlockValueObject("BLOCK0002"));
         }
 		
 	}
