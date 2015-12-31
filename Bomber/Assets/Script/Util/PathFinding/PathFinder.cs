@@ -2,37 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PathFinder {
+public class PathFinder
+{
+    public static List<AStarPath> findPath(GameMap map_, IntegerPair src_, IntegerPair dst_)
+    {
+        if (!map_.isMovable(dst_.x, dst_.y))
+        {
+            return null;
+        }
 
-	public static List<AStarPath> findPath( GameMap map_, IntegerPair src_, IntegerPair dst_ )
-	{
-		if (!map_.isMovable (dst_.x, dst_.y)) {
-			return null;
-		}
+        PathHeap openList = new PathHeap(dst_);
+        Dictionary<string, AStarPath> closedList = new Dictionary<string, AStarPath>();
 
-		PathHeap openList = new PathHeap (dst_);
-		Dictionary<string, AStarPath> closedList = new Dictionary<string, AStarPath>();
+        AStarPath srcPoint = new AStarPath(src_);
+        srcPoint.cost = 0;
+        srcPoint.header = null;
+        openList.insert(srcPoint);
 
-		AStarPath srcPoint = new AStarPath (src_);
-		srcPoint.cost = 0;
-		srcPoint.header = null;
-		openList.insert (srcPoint);
+        AStarPath currentPoint;
+        AStarPath dstPoint = null;
 
-		AStarPath currentPoint;
-		AStarPath dstPoint = null;
+        int i;
 
-		int i;
+        do
+        {
+            currentPoint = openList.extract();
 
-		do {
-			currentPoint = openList.extract();
-
-            if ( currentPoint.ToString() == dst_.ToString() )
-			{
-				dstPoint = currentPoint;
-				break;
-			}
-			else
-			{
+            if (currentPoint.ToString() == dst_.ToString())
+            {
+                dstPoint = currentPoint;
+                break;
+            }
+            else
+            {
                 if (!closedList.ContainsKey(currentPoint.ToString()))
                 {
                     closedList.Add(currentPoint.ToString(), currentPoint);
@@ -63,23 +65,26 @@ public class PathFinder {
                         }
                     }
                 }
-			}
+            }
 
-		} while( openList.heapSize > 0 );
+        } while (openList.heapSize > 0);
 
-		if (dstPoint != null) {
-			Debug.Log( "path found : from " + src_.ToString() + " to " + dst_.ToString() );
-			List<AStarPath> path = new List<AStarPath> ();
-			while (dstPoint != null) {
-				path.Add (dstPoint);
-				dstPoint = dstPoint.header;
-			}
+        if (dstPoint != null)
+        {
+            Debug.Log("path found : from " + src_.ToString() + " to " + dst_.ToString());
+            List<AStarPath> path = new List<AStarPath>();
+            while (dstPoint != null)
+            {
+                path.Add(dstPoint);
+                dstPoint = dstPoint.header;
+            }
 
-			path.Reverse();
-			return path;
-		} else {
-			return null;
-		}
-	}
-
+            path.Reverse();
+            return path;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

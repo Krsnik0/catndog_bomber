@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ObjectLayer : AbstractLayer {
 
 	private bool _objLayerInitFlag = false;
 	private PlayerCharacter _playerCharacter;
+
+    private bool[][] _safezone;
+    private List<AbstractBomb> _bombs;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +26,7 @@ public class ObjectLayer : AbstractLayer {
 		if (!_objLayerInitFlag) {
 			_objLayerInitFlag = true;
 
+            _bombs = new List<AbstractBomb>();
 			EventManager.getInstance().addEventListener( BombExplodeEvent.BOMB_EXPLODE_EVENT_KEY, onBombExploded );
 		}
 	}
@@ -32,7 +36,13 @@ public class ObjectLayer : AbstractLayer {
 		base.loadLayer (layerData_);
 
 		_playerCharacter = GetComponentInChildren<PlayerCharacter> ();
-	}
+        _safezone = new bool[layerSize.x][];
+
+        for (int i = 0; i < layerSize.x; ++i)
+        {
+            _safezone[i] = new bool[layerSize.y];
+        }
+    }
 
 	public PlayerCharacter playerCharacter
 	{
@@ -41,7 +51,17 @@ public class ObjectLayer : AbstractLayer {
 		}
 	}
 
-	public void explode( AbstractBomb bomb_ )
+    public override AbstractGameObject addObject(AbstractGameObject obj_)
+    {
+        if (obj_ is AbstractBomb)
+        {
+            _bombs.Add(obj_ as AbstractBomb);
+            updateSafezone();
+        }
+        return base.addObject(obj_);
+    }
+
+    public void explode( AbstractBomb bomb_ )
 	{
 		int i, j, k;
 		IntegerPair bombPos = bomb_.positionIndexPair;
@@ -93,7 +113,54 @@ public class ObjectLayer : AbstractLayer {
 		BombExplodeEvent bombEvent = event_ as BombExplodeEvent;
 		
 		if (bombEvent.targetGameObject != null) {
+            _bombs.Remove(bombEvent.targetGameObject);
 			explode( bombEvent.targetGameObject );
+
+            updateSafezone();
 		}
 	}
+
+    private void updateSafezone()
+    {
+        int i, j, k;
+        IntegerPair leftTop, rightBottom;
+        IntegerPair position;
+        AbstractBombValueObject bombData;
+
+        for (i = 0; i < _safezone.Length; ++i)
+        {
+            for (j = 0; j < _safezone[i].Length; ++j)
+            {
+                _safezone[i][j] = true;
+            }
+        }
+
+        for (i = 0; i < _bombs.Count; ++i)
+        {
+            position = _bombs[i].positionIndexPair;
+            bombData = _bombs[i].bombData;
+            leftTop = new IntegerPair(
+                                              Mathf.Max(position.x - bombData.bombPosition.x, 0),
+                                              Mathf.Max(position.y - bombData.bombPosition.y, 0));
+            rightBottom = new IntegerPair(
+                                                      Mathf.Min(position.x - bombData.bombPosition.x + bombData.explosionShape.Length, layerSize.x - 1),
+                                                      Mathf.Min(position.y - bombData.bombPosition.y + bombData.explosionShape[0].Length, layerSize.y - 1));
+
+            for (j = leftTop.x; j < rightBottom.x; ++j)
+            {
+                for (k = leftTop.y; k < rightBottom.y; ++k)
+                {
+                    if (bombData.explosionShape[j - leftTop.x][k - leftTop.y])
+                    {
+                        _safezone[j][k] = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public bool isSafe(int x_, int y_)
+    {
+        return _safezone[x_][y_];
+    }
 }

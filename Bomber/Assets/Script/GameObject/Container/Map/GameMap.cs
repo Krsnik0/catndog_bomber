@@ -112,6 +112,11 @@ public class GameMap : AbstractContainerObject
         return isMovable(x_, y_);
     }
 
+    public bool isSafe(int x_, int y_)
+    {
+        return _objectLayer.isSafe(x_, y_);
+    }
+
     public override AbstractGameObject addObject(AbstractGameObject obj_)
     {
         switch (obj_.layer)
@@ -215,7 +220,6 @@ public class GameMap : AbstractContainerObject
                             {
                                 _markerLayer.resetBackbuffer();
                                 
-                                //_markerLayer.removeAll(true);
                                 _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange);
                                 _markerLayer.markExplosionArea(posIdxPair,
                                                                 bombData.explosionShape,

@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.LOOK_AROUND:
                 Camera.main.GetComponent<CameraScript>().moveCamTo(PositionCalcUtil.mapIndexToVector3(_stageData.goal), _lookAroundTime);
-                Invoke("onCamOnGoal", _lookAroundTime);
+                Invoke("onCamOnGoal", _lookAroundTime * 2);
                 break;
             case GameState.THROWING:
                 Time.timeScale = 0.1f;

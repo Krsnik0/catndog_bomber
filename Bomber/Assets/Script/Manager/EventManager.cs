@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EventManager {
+    // TODO : Event priority
 	static private EventManager _instance;
 
 	public delegate void EventListener( AbstractEvent event_ );

@@ -95,8 +95,24 @@ public abstract class AbstractLayer : AbstractContainerObject {
 		} else {
 			return false;
 		}
-		
 	}
+
+    public bool nonObstacleObjExistAt(int x_, int y_)
+    {
+        Rect objRect;
+        Rect paramRect = PositionCalcUtil.tileRectFromIdxPair(new IntegerPair(x_, y_));
+        for (int i = 0; i < _nonObstacleObjects.Count; ++i)
+        {
+            objRect = PositionCalcUtil.tileRectFromIdxPair(_nonObstacleObjects[i].positionIndexPair);
+
+            if (objRect.Overlaps(paramRect))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	public AbstractGameObject getObjectAt( int x_, int y_ )
 	{

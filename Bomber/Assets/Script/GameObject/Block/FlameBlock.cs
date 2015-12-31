@@ -45,7 +45,15 @@ public class FlameBlock : AbstractBlock {
 		}
 	}
 
-	public override void destroyObject ()
+    public override bool isObstacle
+    {
+        get
+        {
+            return false;
+        }
+    }
+
+    public override void destroyObject ()
 	{
 		EventManager.getInstance().dispatchEvent( new ObjectRemovedEvent( this ) );
 		EventManager.getInstance().dispatchEvent( new UpdateRequestEvent( typeof( GameMap ) ) );
