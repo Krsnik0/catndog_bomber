@@ -39,8 +39,11 @@ public abstract class AbstractCharacter : AbstractGameObject {
 	protected override void updateObject ()
 	{
 		if (_path != null) {
-
-            if( GameMap.getInstance().isMovable( _path[0].x, _path[0].y ) )
+            if (GameManager.getInstance().currentState == GameManager.GameState.THROWING)
+            {
+                EventManager.getInstance().dispatchEvent(new UpdateRequestEvent(typeof(GameMap)));
+            }
+            if ( GameMap.getInstance().isMovable( _path[0].x, _path[0].y ) )
             {
                 Vector3 dst = PositionCalcUtil.mapIndexToVector3(_path[0]);
                 Vector3 delta = (dst - transform.position).normalized * speed * Time.deltaTime;
@@ -48,7 +51,6 @@ public abstract class AbstractCharacter : AbstractGameObject {
 
                 if (Vector3.Distance(dst, transform.position) < 0.01f * speed * Time.timeScale)
                 {
-                    EventManager.getInstance().dispatchEvent(new UpdateRequestEvent(typeof(GameMap)));
                     transform.position = dst;
                     _prevPathElement = _path[0];
                     _path.RemoveAt(0);

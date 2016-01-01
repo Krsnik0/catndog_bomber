@@ -99,15 +99,24 @@ public abstract class AbstractLayer : AbstractContainerObject {
 
     public bool nonObstacleObjExistAt(int x_, int y_)
     {
+        BoxCollider2D boxCollider;
+        Vector2 pos;
         Rect objRect;
         Rect paramRect = PositionCalcUtil.tileRectFromIdxPair(new IntegerPair(x_, y_));
         for (int i = 0; i < _nonObstacleObjects.Count; ++i)
         {
-            objRect = PositionCalcUtil.tileRectFromIdxPair(_nonObstacleObjects[i].positionIndexPair);
-
-            if (objRect.Overlaps(paramRect))
+            boxCollider = _nonObstacleObjects[i].GetComponentInChildren<BoxCollider2D>();
+            if (boxCollider != null)
             {
-                return true;
+                pos = boxCollider.gameObject.transform.position;
+                pos += boxCollider.offset;
+                objRect = new Rect(pos.x, pos.y, boxCollider.size.x, boxCollider.size.y);
+                //objRect = PositionCalcUtil.tileRectFromIdxPair();
+
+                if (objRect.Overlaps(paramRect))
+                {
+                    return true;
+                }
             }
         }
 

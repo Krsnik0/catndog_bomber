@@ -112,7 +112,9 @@
     <Compile Include="Assets\Script\Util\PathFinding\SafeZoneFinder.cs" />
     <Compile Include="Assets\Script\Util\PositionCalcUtil.cs" />
     <None Include="Assets\Resources\XML\Stage\Stage_0001_backup2.xml" />
-    <None Include="Assets\Resources\XML\Stage\Stage_0001_backup.xml" />
+    <None Include="Assets\Resources\XML\Stage\Stage_0001_backup.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\Resources\XML\Stage\Stage_0001.xml">
       <SubType>Designer</SubType>
     </None>

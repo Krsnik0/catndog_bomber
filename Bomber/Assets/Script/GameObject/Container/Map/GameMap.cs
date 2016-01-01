@@ -64,6 +64,7 @@ public class GameMap : AbstractContainerObject
 
             EventManager.getInstance().addEventListener(UpdateRequestEvent.UPDATE_REQUEST_EVENT_KEY, onUpdateRequest);
             EventManager.getInstance().addEventListener(ObjectRemovedEvent.OBJECT_REMOVED_EVENT_KEY, onObjectRemoved);
+            EventManager.getInstance().addEventListener(GameStateEvent.STATE_EVENT_KEY, onStateChanged);
         }
     }
 
@@ -109,7 +110,7 @@ public class GameMap : AbstractContainerObject
 
     public bool isThrowable(int x_, int y_)
     {
-        return isMovable(x_, y_);
+        return isMovable(x_, y_) && !_objectLayer.nonObstacleObjExistAt(x_, y_);
     }
 
     public bool isSafe(int x_, int y_)
@@ -277,11 +278,35 @@ public class GameMap : AbstractContainerObject
             {
                 case GameManager.GameState.THROWING:
                     _markerLayer.resetBackbuffer();
-                    //_markerLayer.removeAll(true);
+
                     _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, RootUI.getInstance().uiData.selectedBomb.throwRange);
+                    IntegerPair selectedPos = _markerLayer.getSelectedPos();
+                    if (selectedPos != null && isThrowable(selectedPos.x, selectedPos.y))
+                    {
+                        AbstractBombValueObject bombData;
+                        bombData = RootUI.getInstance().uiData.selectedBomb;
+                        _markerLayer.markExplosionArea(_markerLayer.getSelectedPos(),
+                                                                        bombData.explosionShape,
+                                                                        bombData.bombPosition);
+                    }
+                    else
+                    {
+                        _markerLayer.resetSelectedPos();
+                    }
+                    //_markerLayer.removeAll(true);
                     _markerLayer.drawBackbuffer();
                     break;
             }
+        }
+    }
+
+    private void onStateChanged(AbstractEvent event_)
+    {
+        GameStateEvent stateEvent = event_ as GameStateEvent;
+
+        if (stateEvent.prevState == GameManager.GameState.THROWING)
+        {
+            _markerLayer.resetSelectedPos();
         }
     }
 

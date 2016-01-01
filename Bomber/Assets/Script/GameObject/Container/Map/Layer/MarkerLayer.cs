@@ -84,7 +84,6 @@ public class MarkerLayer : AbstractLayer {
 
     private void addMarker( int x_, int y_, MarkerBlock.MarkerType type_, Color color_ )
     {
-
         BlockValueObject markerBlock = BlockDataManager.getInstance().findBlockData("SYSBLOCK0000");
 
         MarkerBlock newMarker;
@@ -113,11 +112,8 @@ public class MarkerLayer : AbstractLayer {
     public void drawBackbuffer()
     {
         int i, j;
-        
-
         MarkerBlock obj;
         
-
         for ( i = 0; i < _backbuffer.Length; ++ i )
         {
             for (j = 0; j < _backbuffer[i].Length; ++j)
@@ -179,10 +175,16 @@ public class MarkerLayer : AbstractLayer {
                 }
             }
         }
-        
     }
 
-	public override void removeAll (bool destroyFlag)
+    public override AbstractGameObject removeObject(AbstractGameObject obj_)
+    {
+        IntegerPair pos = obj_.positionIndexPair;
+        _backbuffer[pos.x][pos.y] = MarkerBlock.MarkerType.NONE;
+        return base.removeObject(obj_);
+    }
+
+    public override void removeAll (bool destroyFlag)
 	{
 		base.removeAll (destroyFlag);
 
@@ -194,4 +196,14 @@ public class MarkerLayer : AbstractLayer {
 	{
 		return _selectedPosition != null && position_.ToString () == _selectedPosition.ToString ();
 	}
+
+    public IntegerPair getSelectedPos()
+    {
+        return _selectedPosition;
+    }
+
+    public void resetSelectedPos()
+    {
+        _selectedPosition = null;
+    }
 }
