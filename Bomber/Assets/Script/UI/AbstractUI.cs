@@ -3,71 +3,82 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class AbstractUI : AbstractBoomscapeObject {
+namespace Boomscape.UI
+{
+    public abstract class AbstractUI : AbstractBoomscapeObject
+    {
 
-	private bool _uiInitFlag = false;
+        private bool _uiInitFlag = false;
 
-	private AbstractUI _parentUI;
-	private List<AbstractUI> _childrenUI;
+        private AbstractUI _parentUI;
+        private List<AbstractUI> _childrenUI;
 
-	private Vector3 _prevScale;
+        private Vector3 _prevScale;
 
-	// Use this for initialization
-	void Start () {
-		initObject ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		updateObject ();
-	}
+        // Use this for initialization
+        void Start()
+        {
+            initObject();
+        }
 
-	public AbstractUI parentUI {
-		get {
-			return _parentUI;
-		}
-	}
+        // Update is called once per frame
+        void Update()
+        {
+            updateObject();
+        }
 
-	protected override void initObject ()
-	{
-		if (!_uiInitFlag) {
-			_parentUI = transform.parent.GetComponent<AbstractUI> ();
+        public AbstractUI parentUI
+        {
+            get
+            {
+                return _parentUI;
+            }
+        }
 
-			updateChildrenList();
-		}
-	}
+        protected override void initObject()
+        {
+            if (!_uiInitFlag)
+            {
+                _parentUI = transform.parent.GetComponent<AbstractUI>();
 
-	public void updateChildrenList()
-	{
-		_childrenUI = new List<AbstractUI>();
-		AbstractUI childUI;
-		for( int i = 0; i < transform.childCount; ++ i )
-		{
-			childUI = transform.GetChild (i).GetComponent<AbstractUI> ();
+                updateChildrenList();
+            }
+        }
 
-			if( childUI != null )
-			{
-				_childrenUI.Add( childUI );
-			}
-		}
-	}
+        public void updateChildrenList()
+        {
+            _childrenUI = new List<AbstractUI>();
+            AbstractUI childUI;
+            for (int i = 0; i < transform.childCount; ++i)
+            {
+                childUI = transform.GetChild(i).GetComponent<AbstractUI>();
 
-	public void setVisibility( bool value_ )
-	{
-		gameObject.SetActive (value_);
-	}
+                if (childUI != null)
+                {
+                    _childrenUI.Add(childUI);
+                }
+            }
+        }
 
-	public virtual void onClick ()
-	{
-		if (parentUI != null) {
-			parentUI.onChildClick( this );
-		}
-	}
+        public void setVisibility(bool value_)
+        {
+            gameObject.SetActive(value_);
+        }
 
-	public virtual void onChildClick ( AbstractUI child_ )
-	{
-		if (parentUI != null) {
-			parentUI.onChildClick( child_ );
-		}
-	}
+        public virtual void onClick()
+        {
+            if (parentUI != null)
+            {
+                parentUI.onChildClick(this);
+            }
+        }
+
+        public virtual void onChildClick(AbstractUI child_)
+        {
+            if (parentUI != null)
+            {
+                parentUI.onChildClick(child_);
+            }
+        }
+    }
 }
