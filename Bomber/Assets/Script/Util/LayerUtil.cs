@@ -1,31 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LayerUtil {
-    static public int getLayerValue(params int[] layers)
+namespace Boomscape.Util
+{
+    public class LayerUtil
     {
-        int ret = 0;
-        for (int i = 0; i < layers.Length; ++i)
+        static public int getLayerValue(params int[] layers)
         {
-            ret += (1 << layers[i]);
+            int ret = 0;
+            for (int i = 0; i < layers.Length; ++i)
+            {
+                ret += (1 << layers[i]);
+            }
+
+            return ret;
         }
 
-        return ret;
-    }
-
-    static public int clickableLayer
-    {
-        get
+        static public int clickableLayer
         {
-            return getLayerValue(8, 9);
+            get
+            {
+                return getLayerValue(8, 9);
+            }
         }
-    }
 
-    static public int sightBlockLayer
-    {
-        get
+        static public int sightBlockLayer
         {
-            return getLayerValue(10);
+            get
+            {
+                return getLayerValue(10);
+            }
         }
     }
 }
