@@ -196,6 +196,11 @@ namespace Boomscape.InGameObject.Container.Map
             }
         }
 
+        private int getThrowRange( int bombThrowRange )
+        {
+            return bombThrowRange + (int)_objectLayer.playerCharacter.strength;
+        }
+
         private void onInputEvent(AbstractEvent event_)
         {
             InputEvent inputEvent = (InputEvent)event_;
@@ -238,7 +243,7 @@ namespace Boomscape.InGameObject.Container.Map
                                 {
                                     _markerLayer.resetBackbuffer();
 
-                                    _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange);
+                                    _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, getThrowRange( bombData.throwRange ));
                                     _markerLayer.markExplosionArea(posIdxPair,
                                                                     bombData.explosionShape,
                                                                     bombData.bombPosition);
@@ -265,7 +270,7 @@ namespace Boomscape.InGameObject.Container.Map
 
                                             _markerLayer.resetBackbuffer();
                                             //_markerLayer.removeAll(true);
-                                            _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, bombData.throwRange);
+                                            _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, getThrowRange( bombData.throwRange));
                                             _markerLayer.markExplosionArea(posIdxPair,
                                                                             bombData.explosionShape,
                                                                             bombData.bombPosition);
@@ -296,7 +301,7 @@ namespace Boomscape.InGameObject.Container.Map
                     case GameState.THROWING:
                         _markerLayer.resetBackbuffer();
 
-                        _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, RootUI.getInstance().uiData.selectedBomb.throwRange);
+                        _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, getThrowRange(RootUI.getInstance().uiData.selectedBomb.throwRange));
                         IntegerPair selectedPos = _markerLayer.getSelectedPos();
                         if (selectedPos != null && isThrowable(selectedPos.x, selectedPos.y))
                         {

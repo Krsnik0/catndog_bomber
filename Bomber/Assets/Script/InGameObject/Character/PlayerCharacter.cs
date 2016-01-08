@@ -7,6 +7,7 @@ using Boomscape.Data.Event;
 using Boomscape.Util;
 using Boomscape.Util.PathFinding;
 using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
+using Boomscape.Data.Event.State;
 
 namespace Boomscape.InGameObject.Character
 {
@@ -14,6 +15,14 @@ namespace Boomscape.InGameObject.Character
     {
 
         private bool _playerInitFlag = false;
+
+        private float str;
+        private float stm;
+        private float spd;
+
+        private float str_add;
+        private float stm_add;
+        private float spd_add;
 
         private void Start()
         {
@@ -32,6 +41,7 @@ namespace Boomscape.InGameObject.Character
                 _playerInitFlag = true;
 
                 EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
+                EventManager.getInstance().addEventListener(GameStateEvent.STATE_EVENT_KEY, onGameStateChanged);
             }
         }
 
@@ -57,7 +67,23 @@ namespace Boomscape.InGameObject.Character
         {
             get
             {
-                return 3;
+                return spd + spd_add;
+            }
+        }
+
+        public float strength
+        {
+            get
+            {
+                return str+str_add;
+            }
+        }
+
+        public float stamina
+        {
+            get
+            {
+                return stm + stm_add;
             }
         }
 
@@ -70,6 +96,27 @@ namespace Boomscape.InGameObject.Character
         {
             GameManager.getInstance().changeState(GameState.GAME_OVER);
             base.destroyObject();
+        }
+
+        private void onGameStateChanged( AbstractEvent event_ )
+        {
+            GameStateEvent gameStateEvent = event_ as GameStateEvent;
+
+            switch( gameStateEvent.prevState )
+            {
+                case GameState.LOOK_AROUND:
+                    // stat set
+                    
+                    str = (float)gameStateEvent.eventParams[0];
+                    stm = (float)gameStateEvent.eventParams[1];
+                    spd = (float)gameStateEvent.eventParams[2];
+
+                    str_add = 0;
+                    stm_add = 0;
+                    spd_add = 0;
+
+                    break;
+            }
         }
     }
 }
