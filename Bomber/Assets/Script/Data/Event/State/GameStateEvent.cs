@@ -18,6 +18,12 @@ namespace Boomscape.Data.Event.State
             this._nextState = nextState_;
         }
 
+        public GameStateEvent(GameState prevState_, GameState nextState_, object[] eventParams_) : base(eventParams_)
+        {
+            this._prevState = prevState_;
+            this._nextState = nextState_;
+        }
+
         public GameState prevState
         {
             get

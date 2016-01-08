@@ -99,6 +99,12 @@ namespace Boomscape.Manager
 
         private void onResourceLoaded()
         {
+            // loading ended
+            // change state
+            // know stats
+            _map.loadStage(_stageData);
+            _rootUI.loadStageUI(_stageData);
+
             changeState(GameState.LOOK_AROUND);
         }
 
@@ -107,8 +113,22 @@ namespace Boomscape.Manager
             if (_currentState != newState_)
             {
                 Debug.Log("State change : " + _currentState.ToString() + " -> " + newState_.ToString());
-                EventManager.getInstance().dispatchEvent(new GameStateEvent(_currentState, newState_));
+                
                 onStateEnd(_currentState);
+                EventManager.getInstance().dispatchEvent(new GameStateEvent(_currentState, newState_));
+                _currentState = newState_;
+                onStateStart(_currentState);
+            }
+        }
+
+        public void changeState(GameState newState_, object[] params_)
+        {
+            if (_currentState != newState_)
+            {
+                Debug.Log("State change : " + _currentState.ToString() + " -> " + newState_.ToString());
+                
+                onStateEnd(_currentState);
+                EventManager.getInstance().dispatchEvent(new GameStateEvent(_currentState, newState_, params_));
                 _currentState = newState_;
                 onStateStart(_currentState);
             }
@@ -127,9 +147,6 @@ namespace Boomscape.Manager
             switch (state_)
             {
                 case GameState.LOADING:
-                    _map.loadStage(_stageData);
-                    _rootUI.loadStageUI(_stageData);
-
                     EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
                     break;
                 case GameState.THROWING:
@@ -162,7 +179,7 @@ namespace Boomscape.Manager
 
         private void onCamReturn()
         {
-            changeState(GameState.PLAYING);
+            changeState(GameState.PLAYING, new object[] { 3f, 3f, 3f });
         }
     }
 }
