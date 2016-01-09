@@ -33,6 +33,7 @@ namespace Boomscape.InGameObject.Character
         }
 
         public abstract float speed { get; }
+        
 
         public void setPath(List<AStarPath> path)
         {
