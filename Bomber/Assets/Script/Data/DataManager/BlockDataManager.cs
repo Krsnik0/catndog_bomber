@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Boomscape.Data.ValueObject.Game.InGameObject.Block;
+using System;
 
 namespace Boomscape.Data.DataManager
 {
@@ -40,6 +41,19 @@ namespace Boomscape.Data.DataManager
                 _hashmap.Add("BLOCK0002", new BlockValueObject("BLOCK0002"));
             }
 
+        }
+
+        public override void dispose()
+        {
+            string[] keys = new string[_hashmap.Count];
+            _hashmap.Keys.CopyTo(keys, 0);
+            for( int i = 0; i < keys.Length; ++ i )
+            {
+                _hashmap.Remove(keys[i]);
+            }
+
+            _hashmap = null;
+            _instance = null;
         }
 
         public BlockValueObject[] allBlocks

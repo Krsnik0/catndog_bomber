@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Boomscape.Util;
 using Boomscape.Data.ValueObject.Game.InGameObject;
+using Boomscape.Data.ValueObject.Game.InGameObject.Item;
+using Boomscape.InGameObject.Item;
 using Boomscape.Util.Factory;
 
 namespace Boomscape.InGameObject.Container.Map.Layer
@@ -76,6 +78,7 @@ namespace Boomscape.InGameObject.Container.Map.Layer
             }
 
             GameObject gameObj;
+            AbstractGameObject inGameObjComp;
             for (i = 0; i < layerData_.Length; ++i)
             {
                 for (j = 0; j < layerData_[i].Length; ++j)
@@ -84,7 +87,13 @@ namespace Boomscape.InGameObject.Container.Map.Layer
                     {
                         gameObj = GameObjectFactory.getInstance().generateObject(layerData_[i][j].prefabData.Value);
                         gameObj.transform.position = PositionCalcUtil.mapIndexToVector3(new IntegerPair(i, j));
-                        addObject(gameObj.GetComponent<AbstractGameObject>());
+                        inGameObjComp = gameObj.GetComponent<AbstractGameObject>();
+                        addObject(inGameObjComp);
+
+                        if(inGameObjComp is InGameItem)
+                        {
+                            (inGameObjComp as InGameItem).itemData = layerData_[i][j] as ItemValueObject;
+                        }
                     }
                 }
             }
