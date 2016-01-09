@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
+using System;
 
 namespace Boomscape.Data.DataManager
 {
@@ -35,7 +36,7 @@ namespace Boomscape.Data.DataManager
                 _initFlag = true;
                 _hashmap.Add("BOMB0000",
                          new BombType1("BOMB0000", 3, 3, 1, 5)
-            );
+                            );
                 _hashmap.Add("BOMB0001",
                              new BombType1("BOMB0001", 3, 3, 1, 5)
                              );
@@ -46,6 +47,19 @@ namespace Boomscape.Data.DataManager
                              new BombType1("BOMB0003", 3, 3, 1, 5)
                              );
             }
+        }
+
+        public override void dispose()
+        {
+            string[] keys = new string[_hashmap.Count];
+            _hashmap.Keys.CopyTo(keys, 0);
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                _hashmap.Remove(keys[i]);
+            }
+
+            _hashmap = null;
+            _instance = null;
         }
 
         public AbstractBombValueObject findBombData(string code_)

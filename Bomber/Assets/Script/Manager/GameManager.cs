@@ -60,6 +60,7 @@ namespace Boomscape.Manager
                 BlockDataManager.getInstance().loadData();
                 CharacterDataManager.getInstance().loadData();
                 BombDataManager.getInstance().loadData();
+                ItemDataManager.getInstance().loadData();
 
                 List<KeyValuePair<System.Type, string>> usedObjects;
                 _stageData = GameStageParser.parseMap("stage_0001", out usedObjects);

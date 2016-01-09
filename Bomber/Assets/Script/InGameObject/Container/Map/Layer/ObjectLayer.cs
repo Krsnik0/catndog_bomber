@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Boomscape.InGameObject.Character;
 using Boomscape.InGameObject.Bomb;
+using Boomscape.InGameObject.Item;
 using Boomscape.Manager;
 using Boomscape.Data.Event.GameObject;
 using Boomscape.Data.ValueObject.Game.InGameObject;
@@ -22,6 +23,7 @@ namespace Boomscape.InGameObject.Container.Map.Layer
 
         private bool[][] _safezone;
         private List<AbstractBomb> _bombs;
+        private List<InGameItem> _items;
 
         // Use this for initialization
         void Start()
@@ -44,6 +46,7 @@ namespace Boomscape.InGameObject.Container.Map.Layer
                 _objLayerInitFlag = true;
 
                 _bombs = new List<AbstractBomb>();
+                _items = new List<InGameItem>();
                 EventManager.getInstance().addEventListener(BombExplodeEvent.BOMB_EXPLODE_EVENT_KEY, onBombExploded);
             }
         }
@@ -76,7 +79,25 @@ namespace Boomscape.InGameObject.Container.Map.Layer
                 _bombs.Add(obj_ as AbstractBomb);
                 updateSafezone();
             }
+            else if( obj_ is InGameItem)
+            {
+                _items.Add(obj_ as InGameItem);
+            }
             return base.addObject(obj_);
+        }
+
+        public override AbstractGameObject removeObject(AbstractGameObject obj_)
+        {
+            if (obj_ is AbstractBomb)
+            {
+                _bombs.Remove(obj_ as AbstractBomb);
+                updateSafezone();
+            }
+            else if (obj_ is InGameItem)
+            {
+                _items.Remove(obj_ as InGameItem);
+            }
+            return base.removeObject(obj_);
         }
 
         public void explode(AbstractBomb bomb_)
