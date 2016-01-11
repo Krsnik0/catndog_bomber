@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+
 using Boomscape.Data.ValueObject.Game;
 using Boomscape.Data.ValueObject.Game.InGameObject;
+using Boomscape.Data.Constant;
 using Boomscape.Data.DataManager;
 using Boomscape.Data.ValueObject.Game.InGameObject.Character;
 using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
@@ -118,6 +120,9 @@ namespace Boomscape.Util.Parser
             usedObjects_.Add(BlockDataManager.getInstance().findBlockData("SYSBLOCK0001").prefabData);      // flame
             usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0000").prefabData);      // entry
             usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0001").prefabData);      // goal
+
+            // UI & HUD
+            usedObjects_.Add(UIPrefabConst.HUD_BOMB_COUNTER);      // bomb counter
 
             return ret;
         }

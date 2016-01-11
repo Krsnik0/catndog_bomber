@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\AbstractBoomscapeObject.cs" />
      <Compile Include="Assets\Script\Data\Constant\GameMapConst.cs" />
      <Compile Include="Assets\Script\Data\Constant\ItemKindConst.cs" />
+     <Compile Include="Assets\Script\Data\Constant\UIPrefabConst.cs" />
      <Compile Include="Assets\Script\Data\DataManager\AbstractDataManager.cs" />
      <Compile Include="Assets\Script\Data\DataManager\BlockDataManager.cs" />
      <Compile Include="Assets\Script\Data\DataManager\BombDataManager.cs" />
@@ -56,6 +57,7 @@
      <Compile Include="Assets\Script\Data\DataManager\TileDataManager.cs" />
      <Compile Include="Assets\Script\Data\Event\AbstractEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\GameObject\BombExplodeEvent.cs" />
+     <Compile Include="Assets\Script\Data\Event\GameObject\BombPlacedEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\GameObject\ObjectRemovedEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\Input\DragInputEvent.cs" />
      <Compile Include="Assets\Script\Data\Event\Input\InputEvent.cs" />
@@ -99,6 +101,9 @@
      <Compile Include="Assets\Script\Manager\InputManager.cs" />
      <Compile Include="Assets\Script\Manager\ResourceManager.cs" />
      <Compile Include="Assets\Script\UI\AbstractUI.cs" />
+     <Compile Include="Assets\Script\UI\HUD\HUDCountdown.cs" />
+     <Compile Include="Assets\Script\UI\HUD\HUDDigitalNumberCounter.cs" />
+     <Compile Include="Assets\Script\UI\HUD\HUDRoot.cs" />
      <Compile Include="Assets\Script\UI\InGame\BombCursor.cs" />
      <Compile Include="Assets\Script\UI\InGame\BombIconUI.cs" />
      <Compile Include="Assets\Script\UI\InGame\BombLister.cs" />
@@ -115,10 +120,7 @@
      <Compile Include="Assets\Script\Util\PathFinding\PathHeap.cs" />
      <Compile Include="Assets\Script\Util\PathFinding\SafeZoneFinder.cs" />
      <Compile Include="Assets\Script\Util\PositionCalcUtil.cs" />
-     <None Include="Assets\Resources\XML\Stage\Stage_0001_backup2.xml" />
      <None Include="Assets\Resources\XML\Stage\Stage_0001.xml" />
-     <None Include="Assets\Resources\XML\Stage\Stage_0001_backup.xml" />
-     <None Include="Assets\Resources\XML\Stage\Stage_0001_backup3.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

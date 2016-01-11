@@ -17,7 +17,9 @@ namespace Boomscape.Data.ValueObject.Game.InGameObject.Bomb
 
         public override AbstractValueObject clone()
         {
-            return new BombType1(rawData);
+            BombType1 ret = new BombType1(code, throwRange, explosionTime, minSize, maxSize);
+            ret.currentSize = currentSize;
+            return ret;
         }
 
         public override bool[][] explosionShape

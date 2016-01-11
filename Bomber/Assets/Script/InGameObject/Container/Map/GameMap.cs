@@ -201,6 +201,21 @@ namespace Boomscape.InGameObject.Container.Map
             return bombThrowRange + (int)_objectLayer.playerCharacter.strength;
         }
 
+        private void addBomb( IntegerPair position_, AbstractBombValueObject bombData_ )
+        {
+            AbstractBomb bomb = GameObjectFactory.getInstance().generateObject(bombData_.prefabData.Value).GetComponent<AbstractBomb>();
+            bomb.positionIndexPair = position_;
+            bomb.bombData = bombData_.clone() as AbstractBombValueObject;
+            bomb.startCountdown();
+            addObject(bomb);
+
+            bombData_.currentSize = bombData_.minSize;
+
+            EventManager.getInstance().dispatchEvent(new BombPlacedEvent(bomb));
+
+            GameManager.getInstance().changeState(GameState.PLAYING);
+        }
+
         private void onInputEvent(AbstractEvent event_)
         {
             InputEvent inputEvent = (InputEvent)event_;
@@ -231,13 +246,7 @@ namespace Boomscape.InGameObject.Container.Map
 
                                 if (marker.markerType == MarkerBlock.MarkerType.BOMB_POSITION)
                                 {
-                                    AbstractBomb bomb = GameObjectFactory.getInstance().generateObject(bombData.prefabData.Value).GetComponent<AbstractBomb>();
-                                    bomb.positionIndexPair = marker.positionIndexPair;
-                                    bomb.bombData = bombData;
-                                    bomb.startCountdown();
-                                    addObject(bomb);
-
-                                    GameManager.getInstance().changeState(GameState.PLAYING);
+                                    addBomb(marker.positionIndexPair, bombData);
                                 }
                                 else if (!_objectLayer.isObjectExistAt(posIdxPair.x, posIdxPair.y))
                                 {
@@ -260,23 +269,23 @@ namespace Boomscape.InGameObject.Container.Map
                                 switch (dragInput.dragState)
                                 {
                                     case DragInputEvent.DragState.DRAGGING:
-                                        //AbstractGameObject originObj = dragInput.target;
                                         posIdxPair = PositionCalcUtil.vector3ToMapIndex(new Vector3(dragInput.inputPos.x, dragInput.inputPos.y));
 
                                         if (_markerLayer.isSelectedBlock(posIdxPair))
                                         {
-                                            bombData.currentSize -= Vector2.Dot(dragInput.inputPos - dragInput.dragOrigin, dragInput.dragDirection);
-                                            //Debug.Log(Vector2.Dot(origin - dragInput.dragOrigin, dragInput.dragDirection) + "," + bombData.currentSize);
+                                            //bombData.currentSize -= Vector2.Dot(dragInput.inputPos - dragInput.dragOrigin, dragInput.dragDirection);
+                                            bombData.currentSize = Vector2.Distance(dragInput.inputPos,dragInput.dragOrigin) * 0.7f;
 
                                             _markerLayer.resetBackbuffer();
-                                            //_markerLayer.removeAll(true);
                                             _markerLayer.markThrowableArea(_objectLayer.playerCharacter.positionIndexPair, getThrowRange( bombData.throwRange));
                                             _markerLayer.markExplosionArea(posIdxPair,
                                                                             bombData.explosionShape,
                                                                             bombData.bombPosition);
                                             _markerLayer.drawBackbuffer();
                                         }
-
+                                        break;
+                                    case DragInputEvent.DragState.ENDED:
+                                        addBomb(marker.positionIndexPair, bombData);
                                         break;
                                 }
                                 #endregion

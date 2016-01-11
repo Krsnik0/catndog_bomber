@@ -47,20 +47,9 @@ namespace Boomscape.InGameObject
             if (_targetPos != null)
             {
                 Vector2 target = (Vector2)_targetPos;
-                if (Vector2.Distance((Vector2)transform.position, target) < _camVelocity.magnitude * 0.01f)
+                for (int i = 0; i < Camera.allCamerasCount; ++i)
                 {
-                    for (int i = 0; i < Camera.allCamerasCount; ++i)
-                    {
-                        Camera.allCameras[i].transform.position = new Vector3(target.x, target.y, transform.position.z);
-                    }
-                    _targetPos = null;
-                }
-                else
-                {
-                    for (int i = 0; i < Camera.allCamerasCount; ++i)
-                    {
-                        Camera.allCameras[i].transform.position += (Vector3)_camVelocity * Time.deltaTime;
-                    }
+                    Camera.allCameras[i].transform.position += (Vector3)_camVelocity * Time.deltaTime;
                 }
             }
         }
@@ -69,6 +58,19 @@ namespace Boomscape.InGameObject
         {
             _targetPos = targetPos_;
             _camVelocity = ((Vector2)targetPos_ - (Vector2)transform.position) / time_;
+
+            Invoke("onCamMoveComplete", time_);
+        }
+
+        private void onCamMoveComplete()
+        {
+            Vector2 target = (Vector2)_targetPos;
+
+            for (int i = 0; i < Camera.allCamerasCount; ++i)
+            {
+                Camera.allCameras[i].transform.position = new Vector3(target.x, target.y, transform.position.z);
+            }
+            _targetPos = null;
         }
 
         private void onDragEvent(AbstractEvent event_)
