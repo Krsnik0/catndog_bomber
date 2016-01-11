@@ -84,6 +84,21 @@ namespace Boomscape.InGameObject.Character
             }
         }
 
+        protected Vector2 movingDirection
+        {
+            get
+            {
+                if( _path == null || _path.Count == 0 )
+                {
+                    return Vector2.zero;
+                }
+                else
+                {
+                    return PositionCalcUtil.mapIndexToVector3(_path[0]) - transform.position;
+                }
+            }
+        }
+
         virtual protected void onBlockedWhileMoving()
         {
             positionIndexPair = _prevPathElement;

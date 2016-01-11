@@ -20,6 +20,7 @@ namespace Boomscape.InGameObject.Character
         private bool _playerInitFlag = false;
 
         private List<ItemValueObject> _itemOnEffect;
+        private Animator _animator;
 
         private float str;
         private float stm;
@@ -47,6 +48,8 @@ namespace Boomscape.InGameObject.Character
 
                 _itemOnEffect = new List<ItemValueObject>();
 
+                _animator = GetComponentInChildren<Animator>();
+
                 EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
                 EventManager.getInstance().addEventListener(GameStateEvent.STATE_EVENT_KEY, onGameStateChanged);
             }
@@ -57,6 +60,30 @@ namespace Boomscape.InGameObject.Character
             base.updateObject();
 
             GameMap.getInstance().checkCleared();
+
+            _animator.SetBool("R", false);
+            _animator.SetBool("L", false);
+            _animator.SetBool("U", false);
+            _animator.SetBool("D", false);
+
+            Vector2 dir = movingDirection;
+
+            if ( dir.x > 0)
+            {
+                _animator.SetBool("R", true);
+            }
+            else if( dir.x < 0)
+            {
+                _animator.SetBool("L", true);
+            }
+            else if( dir.y > 0 )
+            {
+                _animator.SetBool("U", true);
+            }
+            else if( dir.y < 0 )
+            {
+                _animator.SetBool("D", true);
+            }
         }
 
         private void onInputEvent(AbstractEvent event_)

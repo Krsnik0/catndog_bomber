@@ -7,12 +7,12 @@ namespace Boomscape.Util.PathFinding
     public class PathHeap
     {
         private List<AStarPath> pathHeap;
-        private IntegerPair dest;
+        private AStarPath dest;
 
         public PathHeap(IntegerPair dest_)
         {
             pathHeap = new List<AStarPath>();
-            this.dest = dest_;
+            this.dest = new AStarPath( dest_);
         }
 
         public void insert(AStarPath newNode_)
@@ -31,7 +31,7 @@ namespace Boomscape.Util.PathFinding
             {
                 int parentIdx = getParentIdx(idx_);
 
-                if (heuristicCost(pathHeap[parentIdx], dest) > heuristicCost(pathHeap[idx_], dest))
+                if (heuristicCost(pathHeap[parentIdx]) > heuristicCost(pathHeap[idx_]))
                 {
                     swap(parentIdx, idx_);
                     upHeap(parentIdx);
@@ -78,9 +78,9 @@ namespace Boomscape.Util.PathFinding
                 return;
             }
 
-            if (rChildIdx >= pathHeap.Count || heuristicCost(pathHeap[lChildIdx], dest) < heuristicCost(pathHeap[rChildIdx], dest))
+            if (rChildIdx >= pathHeap.Count || heuristicCost(pathHeap[lChildIdx]) < heuristicCost(pathHeap[rChildIdx]))
             {       // no right children
-                if (heuristicCost(pathHeap[lChildIdx], dest) < heuristicCost(pathHeap[idx_], dest))
+                if (heuristicCost(pathHeap[lChildIdx]) < heuristicCost(pathHeap[idx_]))
                 {
                     swap(lChildIdx, idx_);
                     downHeap(lChildIdx);
@@ -88,7 +88,7 @@ namespace Boomscape.Util.PathFinding
             }
             else
             {
-                if (heuristicCost(pathHeap[rChildIdx], dest) < heuristicCost(pathHeap[idx_], dest))
+                if (heuristicCost(pathHeap[rChildIdx]) < heuristicCost(pathHeap[idx_]))
                 {
                     swap(rChildIdx, idx_);
                     downHeap(rChildIdx);
@@ -118,9 +118,9 @@ namespace Boomscape.Util.PathFinding
             return idx_ * 2 + 2;
         }
 
-        private static float heuristicCost(IntegerPair p1_, IntegerPair p2_)
+        private float heuristicCost(AStarPath p1_)
         {
-            return p1_.distance(p2_);
+            return p1_.distance(dest) + p1_.cost;
         }
 
 
