@@ -1,38 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Boomscape.Manager;
 
-public class GameStateEvent : AbstractEvent {
+namespace Boomscape.Data.Event.State
+{
+    public class GameStateEvent : AbstractEvent
+    {
 
-	public const string STATE_EVENT_KEY = "stateEvent";
+        public const string STATE_EVENT_KEY = "stateEvent";
 
-	GameManager.GameState _prevState;
-	GameManager.GameState _nextState;
+        GameState _prevState;
+        GameState _nextState;
 
-	public GameStateEvent( GameManager.GameState prevState_, GameManager.GameState nextState_ )
-	{
-		this._prevState = prevState_;
-		this._nextState = nextState_;
-	}
+        public GameStateEvent(GameState prevState_, GameState nextState_)
+        {
+            this._prevState = prevState_;
+            this._nextState = nextState_;
+        }
 
-	public GameManager.GameState prevState
-	{
-		get
-		{
-			return _prevState;
-		}
-	}
+        public GameStateEvent(GameState prevState_, GameState nextState_, object[] eventParams_) : base(eventParams_)
+        {
+            this._prevState = prevState_;
+            this._nextState = nextState_;
+        }
 
-	public GameManager.GameState nextState
-	{
-		get
-		{
-			return _nextState;
-		}
-	}
+        public GameState prevState
+        {
+            get
+            {
+                return _prevState;
+            }
+        }
 
-	public override string eventKey {
-		get {
-			return STATE_EVENT_KEY;
-		}
-	}
+        public GameState nextState
+        {
+            get
+            {
+                return _nextState;
+            }
+        }
+
+        public override string eventKey
+        {
+            get
+            {
+                return STATE_EVENT_KEY;
+            }
+        }
+    }
 }

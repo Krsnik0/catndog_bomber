@@ -1,21 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIDataValueObject : AbstractValueObject {
+using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
 
-	public UIDataValueObject()
-	{
-	}
+namespace Boomscape.Data.ValueObject.System.UI
+{
+    public class UIDataValueObject : AbstractValueObject
+    {
 
-	public override AbstractValueObject clone ()
-	{
-		UIDataValueObject retValue = new UIDataValueObject ();
-		retValue.selectedBomb = selectedBomb;
-		return retValue;
-	}
+        public UIDataValueObject()
+        {
+        }
 
-	public AbstractBombValueObject selectedBomb {
-		get;
-		set;
-	}
+        public override AbstractValueObject clone()
+        {
+            UIDataValueObject retValue = new UIDataValueObject();
+            retValue.selectedBomb = selectedBomb;
+            return retValue;
+        }
+
+        public AbstractBombValueObject selectedBomb
+        {
+            get;
+            set;
+        }
+    }
 }

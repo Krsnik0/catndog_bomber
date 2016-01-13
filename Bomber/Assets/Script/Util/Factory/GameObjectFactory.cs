@@ -1,32 +1,38 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Boomscape.Manager;
 
-public class GameObjectFactory {
+namespace Boomscape.Util.Factory
+{
+    public class GameObjectFactory
+    {
 
-	static private GameObjectFactory _instance;
+        static private GameObjectFactory _instance;
 
-	static public GameObjectFactory getInstance()
-	{
-		if (_instance == null) {
-			_instance = new GameObjectFactory();
-		}
+        static public GameObjectFactory getInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new GameObjectFactory();
+            }
 
-		return _instance;
-	}
+            return _instance;
+        }
 
-	private GameObjectFactory()
-	{
-	}
+        private GameObjectFactory()
+        {
+        }
 
-	public GameObject generateObject( string prefabPath_ )
-	{
-		return MonoBehaviour.Instantiate ((GameObject)ResourceManager.getInstance().findResource( prefabPath_ ) );
-	}
+        public GameObject generateObject(string prefabPath_)
+        {
+            return MonoBehaviour.Instantiate((GameObject)ResourceManager.getInstance().findResource(prefabPath_));
+        }
 
-	public void dispose()
-	{
-		_instance = null;
-		//Resources.UnloadAsset ();
-	}
+        public void dispose()
+        {
+            _instance = null;
+            //Resources.UnloadAsset ();
+        }
+    }
 }

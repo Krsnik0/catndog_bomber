@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class AbstractDataManager {
-
-	abstract public void loadData();
+namespace Boomscape.Data.DataManager
+{
+    public abstract class AbstractDataManager
+    {
+        abstract public void loadData();
+        abstract public void dispose();
+    }
 }
