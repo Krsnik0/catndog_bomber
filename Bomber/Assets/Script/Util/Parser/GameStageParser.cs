@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+
 using Boomscape.Data.ValueObject.Game;
 using Boomscape.Data.ValueObject.Game.InGameObject;
+using Boomscape.Data.Constant;
 using Boomscape.Data.DataManager;
+using Boomscape.Data.ValueObject.Game.InGameObject.Character;
 using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
 
 namespace Boomscape.Util.Parser
@@ -30,7 +33,8 @@ namespace Boomscape.Util.Parser
 
             XmlNode objLayerXML = stageDataXML.SelectSingleNode("ObjectLayer");
             string objLayerString = objLayerXML.InnerText;
-            string[] objInLayer = objLayerString.Split(',');
+            string[] rowInLayer = objLayerString.Split('|');
+            string[] objInRow;
 
             AbstractGameObjectValueObject objInPos;
             int i, j;
@@ -41,14 +45,19 @@ namespace Boomscape.Util.Parser
 
             for (i = 0; i < ret.mapSize.x; ++i)
             {
+                objInRow = rowInLayer[i].Split(',');
                 ret.objLayer[i] = new AbstractGameObjectValueObject[ret.mapSize.y];
                 ret.tileLayer[i] = new AbstractGameObjectValueObject[ret.mapSize.y];
                 for (j = 0; j < ret.mapSize.y; ++j)
                 {
-                    objInPos = BlockDataManager.getInstance().findBlockData(objInLayer[i + j * ret.mapSize.x]);
+                    if (objInRow[j] == "")
+                    {
+                        continue;
+                    }
+                    objInPos = BlockDataManager.getInstance().findBlockData(objInRow[j]);
                     if (objInPos == null)
                     {
-                        objInPos = CharacterDataManager.getInstance().findCharacterData(objInLayer[i + j * ret.mapSize.x]);
+                        objInPos = ItemDataManager.getInstance().findItem(objInRow[j]);
                     }
 
                     if (objInPos != null)
@@ -91,7 +100,7 @@ namespace Boomscape.Util.Parser
                 ret.allowedBombs[i] = allowedBomb;
             }
 
-            /*XmlNodeList watchmen = stageDataXML.SelectSingleNode("Enemies").SelectNodes("Watchman");
+            XmlNodeList watchmen = stageDataXML.SelectSingleNode("Watchmen").SelectNodes("Watchman");
             CharacterValueObject character;
             IntegerPair enemyPos = new IntegerPair( 0, 0 );
             for (i = 0; i < watchmen.Count; ++i)
@@ -104,13 +113,16 @@ namespace Boomscape.Util.Parser
 
                 ret.objLayer[enemyPos.y][enemyPos.x] = character;
             }
-            */
+            
 
             // System blocks & tiles
             usedObjects_.Add(BlockDataManager.getInstance().findBlockData("SYSBLOCK0000").prefabData);      // marker
             usedObjects_.Add(BlockDataManager.getInstance().findBlockData("SYSBLOCK0001").prefabData);      // flame
             usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0000").prefabData);      // entry
             usedObjects_.Add(TileDataManager.getInstance().findTileData("SYSTILE0001").prefabData);      // goal
+
+            // UI & HUD
+            usedObjects_.Add(UIPrefabConst.HUD_BOMB_COUNTER);      // bomb counter
 
             return ret;
         }

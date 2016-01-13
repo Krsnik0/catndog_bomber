@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Boomscape.Manager;
 using Boomscape.Data.Event.Input;
 using Boomscape.InGameObject.Container.Map;
@@ -7,7 +8,9 @@ using Boomscape.Data.Event;
 using Boomscape.Util;
 using Boomscape.Util.PathFinding;
 using Boomscape.Data.ValueObject.Game.InGameObject.Bomb;
+using Boomscape.Data.ValueObject.Game.InGameObject.Item;
 using Boomscape.Data.Event.State;
+using Boomscape.Data.Constant;
 
 namespace Boomscape.InGameObject.Character
 {
@@ -15,6 +18,9 @@ namespace Boomscape.InGameObject.Character
     {
 
         private bool _playerInitFlag = false;
+
+        private List<ItemValueObject> _itemOnEffect;
+        private Animator _animator;
 
         private float str;
         private float stm;
@@ -40,6 +46,10 @@ namespace Boomscape.InGameObject.Character
             {
                 _playerInitFlag = true;
 
+                _itemOnEffect = new List<ItemValueObject>();
+
+                _animator = GetComponentInChildren<Animator>();
+
                 EventManager.getInstance().addEventListener(InputEvent.INPUT_EVENT_KEY, onInputEvent);
                 EventManager.getInstance().addEventListener(GameStateEvent.STATE_EVENT_KEY, onGameStateChanged);
             }
@@ -50,6 +60,30 @@ namespace Boomscape.InGameObject.Character
             base.updateObject();
 
             GameMap.getInstance().checkCleared();
+
+            _animator.SetBool("R", false);
+            _animator.SetBool("L", false);
+            _animator.SetBool("U", false);
+            _animator.SetBool("D", false);
+
+            Vector2 dir = movingDirection;
+
+            if ( dir.x > 0)
+            {
+                _animator.SetBool("R", true);
+            }
+            else if( dir.x < 0)
+            {
+                _animator.SetBool("L", true);
+            }
+            else if( dir.y > 0 )
+            {
+                _animator.SetBool("U", true);
+            }
+            else if( dir.y < 0 )
+            {
+                _animator.SetBool("D", true);
+            }
         }
 
         private void onInputEvent(AbstractEvent event_)
@@ -85,6 +119,53 @@ namespace Boomscape.InGameObject.Character
             {
                 return stm + stm_add;
             }
+        }
+
+        public void getItem( ItemValueObject item_ )
+        {
+            _itemOnEffect.Add(item_);           // add item collided
+
+            switch( item_.code )                // add item effect when player got code here
+            {
+                case ItemKindConst.SPEED_ITEM:
+                    break;
+                case ItemKindConst.STAMINA_ITEM:
+                    break;
+                case ItemKindConst.STRENGTH_ITEM:
+                    break;
+            }
+
+            StartCoroutine(loseItemOnTimeUp(item_));
+
+            Debug.Log("item got : " + item_.code);
+        }
+
+        public void loseItem( ItemValueObject item_ )
+        {
+            bool ret = _itemOnEffect.Remove(item_);
+
+            if( ret )
+            {
+                switch (item_.code)                // add item effect when player lost code here
+                {
+                    case ItemKindConst.SPEED_ITEM:
+                        break;
+                    case ItemKindConst.STAMINA_ITEM:
+                        break;
+                    case ItemKindConst.STRENGTH_ITEM:
+                        break;
+                }
+
+                Debug.Log("item lost : " + item_.code);
+            }
+        }
+
+        [SerializeField]
+        private IEnumerator loseItemOnTimeUp( ItemValueObject item_ )
+        {
+            yield return new WaitForSeconds(item_.effectTime);
+
+            loseItem(item_);
         }
 
         public override void onExplosion(AbstractBombValueObject bombData_)
