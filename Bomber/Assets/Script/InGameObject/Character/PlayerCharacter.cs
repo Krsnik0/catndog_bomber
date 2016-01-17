@@ -109,7 +109,7 @@ namespace Boomscape.InGameObject.Character
         {
             get
             {
-                return str+str_add;
+                return str + str_add;
             }
         }
 
@@ -120,7 +120,7 @@ namespace Boomscape.InGameObject.Character
                 return stm + stm_add;
             }
         }
-
+               
         public void getItem( ItemValueObject item_ )
         {
             _itemOnEffect.Add(item_);           // add item collided
@@ -128,10 +128,16 @@ namespace Boomscape.InGameObject.Character
             switch( item_.code )                // add item effect when player got code here
             {
                 case ItemKindConst.SPEED_ITEM:
+                    spd_add = spd * 0.5f;
+                    Debug.Log("speed increase");
                     break;
                 case ItemKindConst.STAMINA_ITEM:
+                    stm_add = stm * 0.3f;
+                    Debug.Log("stamina increase");
                     break;
                 case ItemKindConst.STRENGTH_ITEM:
+                    str_add = str * 0.3f;
+                    Debug.Log("strength increase");
                     break;
             }
 
@@ -149,15 +155,57 @@ namespace Boomscape.InGameObject.Character
                 switch (item_.code)                // add item effect when player lost code here
                 {
                     case ItemKindConst.SPEED_ITEM:
+                        if (!isItemLeft(item_.code))
+                        {
+                            spd_add = 0;
+                            Debug.Log("speed rollback");
+                        }
+                        else
+                        {
+                            Debug.Log("speed not rollback");
+                        }
                         break;
                     case ItemKindConst.STAMINA_ITEM:
+                        if (!isItemLeft(item_.code))
+                        {
+                            stm_add = 0;
+                            Debug.Log("stamina rollback");
+                        }
+                        else
+                        {
+                            Debug.Log("stamina not rollback");
+                        }
                         break;
                     case ItemKindConst.STRENGTH_ITEM:
+                        if (!isItemLeft(item_.code))
+                        {
+                            str_add = 0;
+                            Debug.Log("strength rollback");
+                        }
+                        else
+                        {
+                            Debug.Log("strength rollback");
+                        }
                         break;
                 }
 
                 Debug.Log("item lost : " + item_.code);
             }
+        }
+
+        public bool isItemLeft(string item_kind)
+        {
+            int i = 0;
+            int length = _itemOnEffect.Count;
+
+            for(i = 0; i< length; i++)
+            {
+                if(_itemOnEffect[i].code == item_kind)
+                {
+                    return true;
+                }                
+            }
+            return false;
         }
 
         [SerializeField]

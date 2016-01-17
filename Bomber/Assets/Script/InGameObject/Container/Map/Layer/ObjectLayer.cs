@@ -34,7 +34,25 @@ namespace Boomscape.InGameObject.Container.Map.Layer
         // Update is called once per frame
         void Update()
         {
+            updateObject();
+        }
 
+        protected override void updateObject()
+        {
+            base.updateObject();
+
+            int l;
+
+            for (l = _items.Count - 1; l >= 0; --l)
+            {
+                if (PositionCalcUtil.tileRectFromIdxPair(_items[l].positionIndexPair).Overlaps(
+                    PositionCalcUtil.tileRectFromIdxPair(_playerCharacter.positionIndexPair))
+                   )
+                {
+                    _playerCharacter.getItem(_items[l].itemData);
+                    removeObject(_items[l] as InGameItem);
+                }
+            }
         }
 
         protected override void initObject()

@@ -57,8 +57,16 @@ namespace Boomscape.InGameObject.Container
 
         virtual public AbstractGameObject removeObject(AbstractGameObject obj_)
         {
-            _containingObjects.Remove(obj_);
-            return obj_;
+            if( _containingObjects.Contains( obj_ ))
+            {
+                _containingObjects.Remove(obj_);
+                obj_.destroyObject();
+                return obj_;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         virtual public void removeAll(bool destroyFlag)

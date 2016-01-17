@@ -60,9 +60,9 @@ namespace Boomscape.Data.DataManager
             if( !_initFlag )
             {
                 _initFlag = true;
-                _hashmap.Add(ItemKindConst.SPEED_ITEM, new ItemValueObject(ItemKindConst.SPEED_ITEM, 3));
-                _hashmap.Add(ItemKindConst.STAMINA_ITEM, new ItemValueObject(ItemKindConst.STAMINA_ITEM, 4));
-                _hashmap.Add(ItemKindConst.STRENGTH_ITEM, new ItemValueObject(ItemKindConst.STRENGTH_ITEM, 5));
+                _hashmap.Add(ItemKindConst.SPEED_ITEM, new ItemValueObject(ItemKindConst.SPEED_ITEM, 5));
+                _hashmap.Add(ItemKindConst.STAMINA_ITEM, new ItemValueObject(ItemKindConst.STAMINA_ITEM, 10));
+                _hashmap.Add(ItemKindConst.STRENGTH_ITEM, new ItemValueObject(ItemKindConst.STRENGTH_ITEM, 10));
             }
         }
     }
